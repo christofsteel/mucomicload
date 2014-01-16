@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+from Marvel.Api import Api
+from Marvel.Database import DB
+import argparse
+import configparser
+import os.path
+import getpass
+
+if __name__ == "__main__":
+	conf_parser = argparse.ArgumentParser(
+			add_help = False
+			)
+	conf_parser.add_argument("--config", "-c",
+				help="Specify config file", metavar="FILE")
+	args, remaining_argv = conf_parser.parse_known_args()
+	config = configparser.ConfigParser()
+	config.add_section("MarvelLoad")
+	cfiles = []
+
+	if os.path.isfile("/etc/marvelload.conf"):
+		cfiles.append("/etc/marvelload.conf")
+	if os.path.isfile(os.path.expanduser("~/.config/marvelload.conf")):
+		cfiles.append(os.path.expanduser("~/.config/marvelload.conf"))
+	if args.config and os.path.isfile(args.config):
+		cfiles.append(args.config)
+	config.set("MarvelLoad", "downloaddir", os.path.realpath("."))	
+	config.set("MarvelLoad", "database", os.path.expanduser("~/.marveldb"))	
+	config.read(cfiles)
+	
+
+	parser = argparse.ArgumentParser()
+	parser.add_argument("--database", "-db")
+	parser.add_argument("--config", "-c")
+	subparsers = parser.add_subparsers(dest = 'command')
+	initparser = subparsers.add_parser('init')
+	initparser = subparsers.add_parser('init')
+	searchparser = subparsers.add_parser('search')
+	downloadparser = subparsers.add_parser('download')
+	updateparser = subparsers.add_parser('update')
+	listparser = subparsers.add_parser('list')
+
+	searchparser.add_argument('term')
+	downloadparser.add_argument('series')
+	downloadparser.add_argument('issue', nargs="+")
+	downloadparser.add_argument('--out', '-o',
+			default=None)
+	updateparser.add_argument('--verbose', '-v', action='count')
+	listparser.add_argument('series')
+
+	args = parser.parse_args(remaining_argv)
+
+	db = DB(config['MarvelLoad']['database'])
+
+	if args.command == "search":
+		result = db.search_series(args.term)
+		for r in result:
+			print(r[0])	
+	elif args.command == "download":
+		while not config.has_option("MarvelLoad", "username"):
+			username = input("Username: ")
+			config.set("MarvelLoad", "username", username)
+		while not config.has_option("MarvelLoad", "password"):
+			password = getpass.getpass("Password: ")
+			config.set("MarvelLoad", "password", password)
+		api = Api(config['MarvelLoad']['username'], config['MarvelLoad']['password'])
+		api.connect()
+		if args.out:
+			config.set("MarvelLoad", "downloaddir", args.out)
+		series_id = db.search_series(args.series)[0][1]
+		for issue in args.issue:
+			issue_id = db.get_issue_id(series_id, issue)
+			api.get_issue_by_id(issue_id).download(config["MarvelLoad"]["downloaddir"])
+	elif args.command == "init":
+		print("Initializing Database ")
+		db.init()
+	elif args.command == "update":
+		api = Api("arno", "nuem")
+		db.update(api, args.verbose)
+	elif args.command == "list":
+		api = Api("arno", "nuem")
+		series = db.search_series(args.series)[0]
+		issuelist = db.get_issue_list(series[1])
+		for issue in issuelist:
+			print ("(" + str(issue[1]) + ") " + series[0] + " #" + issue[0])
