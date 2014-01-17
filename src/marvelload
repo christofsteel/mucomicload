@@ -71,7 +71,10 @@ if __name__ == "__main__":
 			args.issue = [i[0] for i in db.get_issue_list(series_id)]
 		for issue in args.issue:
 			issue_id = db.get_issue_id(series_id, issue)
-			api.get_issue_by_id(issue_id).download(config["MarvelLoad"]["downloaddir"])
+			try:
+				api.get_issue_by_id(issue_id).download(config["MarvelLoad"]["downloaddir"])
+			except Exception:
+				print("Could not get %s #%s" % (db.get_title(series_id)[0][0], issue))
 	elif args.command == "init":
 		print("Initializing Database ")
 		db.init()
