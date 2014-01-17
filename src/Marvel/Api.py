@@ -146,7 +146,7 @@ class MUComic:
 		print('Downloading to %s' % filename)
 		comiczip = zipfile.ZipFile(filename, mode='w')
 		for k, url in enumerate(self.get_comic_jpg_urls()):
-			print('Page %02d' % k)
+			#print('Page %02d' % k)
 			image = urlopen(url).read()
 			comiczip.writestr('img_%02d.jpg' % k, image)
 		comiczip.close()
