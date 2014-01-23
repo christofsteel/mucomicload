@@ -1,5 +1,0 @@
-[MarvelLoad]
-;username = username
-;password = secret
-database = ~/.marveldb
-downloaddir = ~/MarvelLoad/

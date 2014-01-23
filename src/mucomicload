@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from Marvel.Api import Api
-from Marvel.Database import DB
+from MUComicLoad.Api import Api
+from MUComicLoad.Database import DB
 import argparse
 import configparser
 import os.path
@@ -14,17 +14,17 @@ if __name__ == "__main__":
 				help="Specify config file", metavar="FILE")
 	args, remaining_argv = conf_parser.parse_known_args()
 	config = configparser.ConfigParser()
-	config.add_section("MarvelLoad")
+	config.add_section("MUComicLoad")
 	cfiles = []
 
-	if os.path.isfile("/etc/marvelload.conf"):
-		cfiles.append("/etc/marvelload.conf")
-	if os.path.isfile(os.path.expanduser("~/.config/marvelload.conf")):
-		cfiles.append(os.path.expanduser("~/.config/marvelload.conf"))
+	if os.path.isfile("/etc/mucomicload.conf"):
+		cfiles.append("/etc/mucomicload.conf")
+	if os.path.isfile(os.path.expanduser("~/.config/mucomicload.conf")):
+		cfiles.append(os.path.expanduser("~/.config/mucomicload.conf"))
 	if args.config and os.path.isfile(args.config):
 		cfiles.append(args.config)
-	config.set("MarvelLoad", "downloaddir", os.path.realpath("."))	
-	config.set("MarvelLoad", "database", os.path.expanduser("~/.marveldb"))	
+	config.set("MUComicLoad", "downloaddir", os.path.realpath("."))	
+	config.set("MUComicLoad", "database", os.path.expanduser("~/.mucomics.db"))	
 	config.read(cfiles)
 	
 
@@ -49,30 +49,30 @@ if __name__ == "__main__":
 
 	args = parser.parse_args(remaining_argv)
 
-	db = DB(config['MarvelLoad']['database'])
+	db = DB(config['MUComicLoad']['database'])
 
 	if args.command == "search":
 		result = db.search_series(args.term)
 		for r in result:
 			print(r[0])	
 	elif args.command == "download":
-		while not config.has_option("MarvelLoad", "username"):
+		while not config.has_option("MUComicLoad", "username"):
 			username = input("Username: ")
-			config.set("MarvelLoad", "username", username)
-		while not config.has_option("MarvelLoad", "password"):
+			config.set("MUComicLoad", "username", username)
+		while not config.has_option("MUComicLoad", "password"):
 			password = getpass.getpass("Password: ")
-			config.set("MarvelLoad", "password", password)
-		api = Api(config['MarvelLoad']['username'], config['MarvelLoad']['password'])
+			config.set("MUComicLoad", "password", password)
+		api = Api(config['MUComicLoad']['username'], config['MUComicLoad']['password'])
 		api.connect()
 		if args.out:
-			config.set("MarvelLoad", "downloaddir", args.out)
+			config.set("MUComicLoad", "downloaddir", args.out)
 		series_id = db.search_series(args.series)[0][1]
 		if args.issue == ["all"]:
 			args.issue = [i[0] for i in db.get_issue_list(series_id)]
 		for issue in args.issue:
 			issue_id = db.get_issue_id(series_id, issue)
 			try:
-				api.get_issue_by_id(issue_id).download(config["MarvelLoad"]["downloaddir"])
+				api.get_issue_by_id(issue_id).download(config["MUComicLoad"]["downloaddir"])
 			except Exception:
 				print("Could not get %s #%s" % (db.get_title(series_id)[0][0], issue))
 	elif args.command == "init":

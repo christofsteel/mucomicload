@@ -1,9 +1,9 @@
-MarvelLoad
+MUComicLoad
 ==========
 
 
 usage:
-	marvelload -c CONFIGFILE -db DBFILE COMMAND
+	mucomicload -c CONFIGFILE -db DBFILE COMMAND
 		COMMANDS:
 			init							Initializes the Database
 			update							Fills the Database
@@ -12,5 +12,5 @@ usage:
 			download term issue [issue]		Download the issues for series found by term.
 											Special: issue = all downloads all issues
 
-if no config is given, marvelload searches /etc/ and /home/USER/.config/ for a marvelload.conf.
-See marvelload.conf.sample
+if no config is given, mucomicload searches /etc/ and /home/USER/.config/ for a mucomicload.conf.
+See mucomicload.conf.sample

@@ -223,5 +223,3 @@ class Api:
 
 	def update(self):
 		self.get_all_series(update=True)
-
-foo = Api('christofsteel', 'marvelunlimited', True)
