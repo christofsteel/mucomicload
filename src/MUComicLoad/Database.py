@@ -51,13 +51,11 @@ class DB():
 			rresult.append(row)
 		return rresult
 
-	def get_title(self, id):
+	def get_series(self, id):
 		c = self.conn.cursor()
-		result = c.execute("select title from series where id == ?", (id,))
-		rresult = []
-		for row in result:
-			rresult.append(row)
-		return rresult
+		result = c.execute("select * from series where id == ?",
+				(id,)).fetchone()
+		return result
 
 	def get_issue_list(self, series_id):
 		c = self.conn.cursor()
@@ -73,6 +71,10 @@ class DB():
 		result = c.execute('select id from issues where series_id == ? and issue_number == ?', (series_id, str(issue_nr))).fetchone()[0]
 		return result
 		
-	
+	def get_issue(self, issue_id):
+		c = self.conn.cursor()
+		result = c.execute('select * from issues where id == ?',
+				(issue_id,)).fetchone()
+		return result
 
 

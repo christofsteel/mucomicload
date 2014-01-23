@@ -5,6 +5,40 @@ import argparse
 import configparser
 import os.path
 import getpass
+import zipfile
+from urllib.request import urlopen
+import re
+
+def safe_nr(nr):
+	if type(nr) is int:
+		return '%03d' % nr
+	elif type(nr) is str:
+		if '.' in nr:
+			split = [int(i) for i in nr.split('.')]
+			split[0] = "%03d" % split[0]
+			return ".".join([str(s) for s in split])
+		else:
+			return safe_nr(int(nr))
+	else:
+		print("Unrecognized issue number")
+		return str(nr)
+
+def download(api, db, id, filename):
+	comic_jpgs = [page['cdnUrls']['jpg_75']['scalar'] for page in
+			api.get_issue_by_id(id)['pages'] if page['cdnUrls'] != {}]
+	if os.path.isdir(filename):
+		issue = db.get_issue(id)
+		seriesname = db.get_series(issue[1])[1]
+		seriesname_clear = re.sub('[^\w\-_\.\(\) ]', '',seriesname)
+		filename = os.path.join(filename,'%s %s.cbz' % (seriesname_clear,
+			safe_nr(issue[2])))
+	print('Downloading to %s' % filename)
+	comiczip = zipfile.ZipFile(filename, mode='w')
+	for k, url in enumerate(comic_jpgs):
+		image = urlopen(url).read()
+		comiczip.writestr('img_%02d.jpg' % k, image)
+	comiczip.close()
+	
 
 if __name__ == "__main__":
 	conf_parser = argparse.ArgumentParser(
@@ -71,10 +105,10 @@ if __name__ == "__main__":
 			args.issue = [i[0] for i in db.get_issue_list(series_id)]
 		for issue in args.issue:
 			issue_id = db.get_issue_id(series_id, issue)
-			try:
-				api.get_issue_by_id(issue_id).download(config["MUComicLoad"]["downloaddir"])
-			except Exception:
-				print("Could not get %s #%s" % (db.get_title(series_id)[0][0], issue))
+			#	try:
+			download(api, db, issue_id, config["MUComicLoad"]["downloaddir"])
+			#	except Exception:
+			#		print("Could not get %s #%s" % (db.get_series(series_id)[1], issue))
 	elif args.command == "init":
 		print("Initializing Database ")
 		db.init()
