@@ -43,7 +43,7 @@ class Ui_MainWindow(object):
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.actionRefresh = QtGui.QAction(MainWindow)
         self.actionRefresh.setObjectName("actionRefresh")
-        self.actionRefresh.setIcon(QtGui.QIcon.fromTheme("application-exit"))
+        self.actionRefresh.setIcon(self.centralwidget.style().standardIcon(QtGui.QStyle.SP_BrowserReload))
         self.actionOpen_Database = QtGui.QAction(MainWindow)
         self.actionOpen_Database.setObjectName("actionOpen_Database")
         self.actionConfiguration = QtGui.QAction(MainWindow)
