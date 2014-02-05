@@ -36,7 +36,7 @@ class Ui_MainWindow(object):
         self.tableIssues.setObjectName("tableIssues")
         self.horizontalLayout_3.addWidget(self.tableIssues)
         MainWindow.setCentralWidget(self.horizontalSplit)
-        self.menubar = QtGui.QMenuBar(MainWindow)
+        self.menubar = QtGui.QMenuBar()
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtGui.QMenu(self.menubar)
