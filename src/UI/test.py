@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainWindow.ui'
 #
-# Created: Wed Feb  5 13:17:24 2014
+# Created: Wed Feb  5 16:33:14 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -38,22 +38,18 @@ class Ui_MainWindow(object):
         self.menuHelp.setObjectName("menuHelp")
         MainWindow.setMenuBar(self.menubar)
         self.toolBar = QtGui.QToolBar(MainWindow)
-        self.toolBar.setToolButtonStyle(QtCore.Qt.ToolButtonFollowStyle)
+        self.toolBar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.toolBar.setObjectName("toolBar")
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
-        self.actionRefresh = QtGui.QAction(MainWindow)
-        self.actionRefresh.setObjectName("actionRefresh")
-        self.actionOpen_Database = QtGui.QAction(MainWindow)
-        self.actionOpen_Database.setObjectName("actionOpen_Database")
         self.actionConfiguration = QtGui.QAction(MainWindow)
         self.actionConfiguration.setObjectName("actionConfiguration")
         self.actionExit = QtGui.QAction(MainWindow)
         self.actionExit.setObjectName("actionExit")
         self.actionAdd_series = QtGui.QAction(MainWindow)
         self.actionAdd_series.setObjectName("actionAdd_series")
-        self.actionAdd_series.setIcon(self.centralwidget.style().standardIcon(QtGui.QStyle.SP_FileDialogNewFolder))
         self.actionUpdate = QtGui.QAction(MainWindow)
         self.actionUpdate.setObjectName("actionUpdate")
+        self.actionAdd_series.setIcon(self.centralwidget.style().standardIcon(QtGui.QStyle.SP_FileDialogNewFolder))
         self.actionUpdate.setIcon(self.centralwidget.style().standardIcon(QtGui.QStyle.SP_BrowserReload))
         self.menuFile.addAction(self.actionConfiguration)
         self.menuFile.addSeparator()
@@ -71,8 +67,6 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
         self.toolBar.setWindowTitle(QtGui.QApplication.translate("MainWindow", "toolBar", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionRefresh.setText(QtGui.QApplication.translate("MainWindow", "Refresh", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionOpen_Database.setText(QtGui.QApplication.translate("MainWindow", "Open Database", None, QtGui.QApplication.UnicodeUTF8))
         self.actionConfiguration.setText(QtGui.QApplication.translate("MainWindow", "Settings", None, QtGui.QApplication.UnicodeUTF8))
         self.actionExit.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAdd_series.setText(QtGui.QApplication.translate("MainWindow", "Add series", None, QtGui.QApplication.UnicodeUTF8))
