@@ -29,7 +29,7 @@ class Ui_MainWindow(object):
         self.listView.setObjectName("listView")
         self.horizontalLayout_3.addWidget(self.listView)
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtGui.QMenuBar(MainWindow)
+        self.menubar = QtGui.QMenuBar()
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtGui.QMenu(self.menubar)
