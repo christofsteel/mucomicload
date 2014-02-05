@@ -68,7 +68,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionRefresh"/>
    <addaction name="actionUpdate"/>
    <addaction name="actionAdd_series"/>
   </widget>

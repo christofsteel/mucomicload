@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainWindow.ui'
 #
-# Created: Tue Feb  4 19:04:09 2014
+# Created: Wed Feb  5 13:17:24 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -43,7 +43,6 @@ class Ui_MainWindow(object):
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.actionRefresh = QtGui.QAction(MainWindow)
         self.actionRefresh.setObjectName("actionRefresh")
-        self.actionRefresh.setIcon(self.centralwidget.style().standardIcon(QtGui.QStyle.SP_BrowserReload))
         self.actionOpen_Database = QtGui.QAction(MainWindow)
         self.actionOpen_Database.setObjectName("actionOpen_Database")
         self.actionConfiguration = QtGui.QAction(MainWindow)
@@ -52,14 +51,15 @@ class Ui_MainWindow(object):
         self.actionExit.setObjectName("actionExit")
         self.actionAdd_series = QtGui.QAction(MainWindow)
         self.actionAdd_series.setObjectName("actionAdd_series")
+        self.actionAdd_series.setIcon(self.centralwidget.style().standardIcon(QtGui.QStyle.SP_FileDialogNewFolder))
         self.actionUpdate = QtGui.QAction(MainWindow)
         self.actionUpdate.setObjectName("actionUpdate")
+        self.actionUpdate.setIcon(self.centralwidget.style().standardIcon(QtGui.QStyle.SP_BrowserReload))
         self.menuFile.addAction(self.actionConfiguration)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionExit)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
-        self.toolBar.addAction(self.actionRefresh)
         self.toolBar.addAction(self.actionUpdate)
         self.toolBar.addAction(self.actionAdd_series)
 
