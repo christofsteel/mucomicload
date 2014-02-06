@@ -41,7 +41,7 @@ class Ui_MainWindow(object):
         self.listIssues.setIconSize(QtCore.QSize(128,128))
         self.horizontalLayout_3.addWidget(self.listIssues)
         MainWindow.setCentralWidget(self.horizontalSplit)
-        self.menubar = QtGui.QMenuBar(MainWindow)
+        self.menubar = QtGui.QMenuBar()
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtGui.QMenu(self.menubar)
