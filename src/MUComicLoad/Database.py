@@ -1,21 +1,33 @@
 import sqlite3
+from collections import namedtuple
+
 
 """
 	Layout:
 		Table Series:
 			id | title | fav
 		Table Issue:
-			id | series_id | issue_number | local	
+			id | series_id | issue_number | cover_link | cover_img | local	
 """
 class DB:
+	def namedtuple_factory(self, cursor, row):
+		"""
+		Usage:
+		con.row_factory = namedtuple_factory
+		"""
+		fields = [col[0] for col in cursor.description]
+		Row = namedtuple("Row", fields)
+		return Row(*row)
+
 	def __init__(self, db_path):
 		self.conn = sqlite3.connect(db_path)
+		self.conn.row_factory = self.namedtuple_factory
 	
-	def init(self):
+	def init_db(self):
 		c = self.conn.cursor()
 		c.execute("CREATE TABLE series(id integer primary key, title unique, fav integer);")
 		c.execute("CREATE TABLE issues(id integer primary key, series_id \
-				integer, issue_number, local integer);")
+				integer, issue_number string, local integer);")
 		c.close()
 
 	def update(self, api, v = 0):
@@ -45,11 +57,8 @@ class DB:
 	def search(self, term):
 		c = self.conn.cursor()
 		termperc = "%" + term + "%"
-		result = c.execute('select s.title, i.issue_number, i.id from series as s join issues as i on s.id == i.series_id where s.title LIKE ?', (termperc,))
-		rresult = []
-		for row in result:
-			rresult.append(row)
-		return rresult
+		result = c.execute('select s.title, i.issue_number, i.id from series as s join issues as i on s.id == i.series_id where s.title LIKE ?',(termperc,)).fetchall()
+		return result
 
 	def get_series(self, id):
 		c = self.conn.cursor()
@@ -64,7 +73,7 @@ class DB:
 
 	def get_issue_id(self, series_id, issue_nr):
 		c = self.conn.cursor()
-		result = c.execute('select id from issues where series_id == ? and issue_number == ?', (series_id, str(issue_nr))).fetchone()[0]
+		result = c.execute('select id from issues where series_id == ? and issue_number == ?', (series_id, str(issue_nr))).fetchone().id
 		return result
 		
 	def get_issue(self, issue_id):

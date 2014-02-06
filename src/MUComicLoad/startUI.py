@@ -1,6 +1,5 @@
-import UI
+import MUComicLoad.UI as UI
 import sys
-import Database
 from PySide import QtGui, QtCore
 
 class SeriesModel(QtCore.QAbstractListModel):
@@ -13,7 +12,7 @@ class SeriesModel(QtCore.QAbstractListModel):
 
 	def data(self, index, role):
 		if role == QtCore.Qt.DisplayRole:
-			return self._series[index.row()][1]
+			return self._series[index.row()].title
 		elif role == QtCore.Qt.UserRole:
 			return self._series[index.row()]
 		else:
@@ -28,55 +27,52 @@ class IssueModel(QtCore.QAbstractListModel):
 		return len(self._issues)
 
 	def data(self, index, role):
+		issue = self._issues[index.row()]
 		if role == QtCore.Qt.DisplayRole:
-			return "%s #%s" % (self._issues[index.row()][3],
-					safe_nr(self._issues[index.row()][0]))
+			return "#%s" % (self.safe_nr(issue.issue_number))
+		elif role == QtCore.Qt.DecorationRole:
+			return QtGui.QIcon('res/test.jpg')
 		else:
 			return None
 
-
-def safe_nr(nr):
-	if type(nr) is int:
-		return '%03d' % nr
-	elif type(nr) is str:
-		if '.' in nr:
-			split = [int(i) for i in nr.split('.')]
-			split[0] = "%03d" % split[0]
-			return ".".join([str(s) for s in split])
+	def safe_nr(self,nr):
+		if type(nr) is int:
+			return '%03d' % nr
+		elif type(nr) is str:
+			if '.' in nr:
+				split = [int(i) for i in nr.split('.')]
+				split[0] = "%03d" % split[0]
+				return ".".join([str(s) for s in split])
+			else:
+				return self.safe_nr(int(nr))
 		else:
-			return safe_nr(int(nr))
-	else:
-		print("Unrecognized issue number")
-		return str(nr)
+			print("Unrecognized issue number")
+			return str(nr)
 
-def updateIssues(item):
-	series_id = item.data(QtCore.Qt.UserRole)[0]
-	newModel = IssueModel(db.get_issue_list(series_id), ui.listIssues)
-	ui.listIssues.setModel(newModel)
+class UIStarter():
+	def updateIssues(self, item):
+		series_id = item.data(QtCore.Qt.UserRole)[0]	# Weird, item.data returns 
+														# list instead of NamedTuple
+		newModel = IssueModel(self.db.get_issue_list(series_id), self.ui.listIssues)
+		self.ui.listIssues.setModel(newModel)
 
+	def __init__(self, db, api):
+		self.db = db
+		app = QtGui.QApplication(sys.argv)
+		mw = QtGui.QMainWindow()
+		self.ui = UI.Ui_MainWindow()
+		self.ui.setupUi(mw)
 
+		seriesmodel = SeriesModel(db.get_faved_series(), self.ui.listComics)
 
-db = Database.DB("/home/christoph/.mucomics.db")
+		firstIndex = seriesmodel.index(0,0)
+		firstseries_id = (seriesmodel.data(firstIndex,QtCore.Qt.UserRole)).id
 
-app = QtGui.QApplication(sys.argv)
-mw = QtGui.QMainWindow()
-ui = UI.Ui_MainWindow()
-ui.setupUi(mw)
+		issuemodel = IssueModel(db.get_issue_list(firstseries_id), self.ui.listIssues)
 
-seriesmodel = SeriesModel(db.get_faved_series(), ui.listComics)
+		self.ui.listComics.setModel(seriesmodel)
+		self.ui.listComics.clicked.connect(self.updateIssues)
+		self.ui.listIssues.setModel(issuemodel)
 
-firstIndex = seriesmodel.index(0,0)
-
-#issuemodel = IssueModel(db.get_issue_list(seriesmodel.data(firstIndex, QtCore.Qt.UserRole)), ui.listIssues)
-"""
-for item in db.get_faved_series():
-	qitem = QtGui.QStandardItem(item[1])
-	qitem.setData(item[0])
-	seriesmodel.appendRow(qitem)
-"""
-ui.listComics.setModel(seriesmodel)
-ui.listComics.clicked.connect(updateIssues)
-#ui.listIssues.setModel(issuemodel)
-
-mw.show()
-app.exec_()
+		mw.show()
+		app.exec_()

@@ -28,7 +28,6 @@ class Ui_MainWindow(object):
 
         self.listComics.setSizePolicy(sizePolicy)
         self.listComics.setObjectName("listComics")
-        self.listComics.setViewMode(QtGui.QListView.IconMode)
 
         self.horizontalLayout_3.addWidget(self.listComics)
         self.listIssues = QtGui.QListView(self.horizontalSplit)
@@ -38,6 +37,8 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.listIssues.sizePolicy().hasHeightForWidth())
         self.listIssues.setSizePolicy(sizePolicy)
         self.listIssues.setObjectName("listIssues")
+        self.listIssues.setViewMode(QtGui.QListView.IconMode)
+        self.listIssues.setIconSize(QtCore.QSize(128,128))
         self.horizontalLayout_3.addWidget(self.listIssues)
         MainWindow.setCentralWidget(self.horizontalSplit)
         self.menubar = QtGui.QMenuBar(MainWindow)
