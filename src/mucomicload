@@ -33,7 +33,9 @@ if __name__ == "__main__":
 
 	args = parser.parse_args(remaining_argv)
 
+	print(config['MUComicLoad']['database'])
 	db = DB(config['MUComicLoad']['database'])
+
 
 	app = UIStarter(db, None)
 
