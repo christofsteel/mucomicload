@@ -52,7 +52,7 @@ class Ui_MainWindow(object):
         self.toolBar = QtGui.QToolBar(MainWindow)
         self.toolBar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.toolBar.setObjectName("toolBar")
-        MainWindow.addToolBar(QtCore.Qt.LeftToolBarArea, self.toolBar)
+        MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.menuFileSettings = QtGui.QAction(MainWindow)
         self.menuFileSettings.setObjectName("menuFileSettings")
         self.menuFileQuit = QtGui.QAction(MainWindow)
@@ -80,12 +80,19 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionAdd_series)
         self.toolBar.addAction(self.menuFileSettings)
         self.toolBar.addAction(self.actionHelp)
-
+        """
         self.actionAdd_series.setIcon(QtGui.QIcon.fromTheme('application-exit', self.horizontalSplit.style().standardIcon(QtGui.QStyle.SP_FileDialogNewFolder)))
         self.actionUpdate.setIcon(self.horizontalSplit.style().standardIcon(QtGui.QStyle.SP_BrowserReload))
         self.menuFileSettings.setIcon(self.horizontalSplit.style().standardIcon(QtGui.QStyle.SP_TitleBarContextHelpButton))
         self.actionHelp.setIcon(self.horizontalSplit.style().standardIcon(QtGui.QStyle.SP_DialogHelpButton))
         self.menuFileQuit.setIcon(self.horizontalSplit.style().standardIcon(QtGui.QStyle.SP_TitleBarCloseButton))
+        """
+        self.actionAdd_series.setIcon(QtGui.QIcon('res/addseries.png'))
+        self.actionUpdate.setIcon(QtGui.QIcon('res/update.png'))
+        self.menuFileSettings.setIcon(QtGui.QIcon('res/settings.png'))
+        self.actionHelp.setIcon(QtGui.QIcon('res/help.png'))
+        self.menuFileQuit.setIcon(QtGui.QIcon('res/exit.png'))
+
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
