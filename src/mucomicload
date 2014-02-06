@@ -23,6 +23,8 @@ def safe_nr(nr):
 		print("Unrecognized issue number")
 		return str(nr)
 
+
+
 def download(api, db, id, filename):
 	comic_jpgs = [page['cdnUrls']['jpg_75']['scalar'] for page in
 			api.get_issue_by_id(id)['pages'] if page['cdnUrls'] != {}]

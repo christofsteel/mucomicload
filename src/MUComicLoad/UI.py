@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainWindow.ui'
 #
-# Created: Wed Feb  5 18:58:12 2014
+# Created: Wed Feb  5 20:04:06 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -24,19 +24,23 @@ class Ui_MainWindow(object):
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.listComics.sizePolicy().hasHeightForWidth())
+
+
         self.listComics.setSizePolicy(sizePolicy)
         self.listComics.setObjectName("listComics")
+        self.listComics.setViewMode(QtGui.QListView.IconMode)
+
         self.horizontalLayout_3.addWidget(self.listComics)
-        self.tableIssues = QtGui.QTableView(self.horizontalSplit)
+        self.listIssues = QtGui.QListView(self.horizontalSplit)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.tableIssues.sizePolicy().hasHeightForWidth())
-        self.tableIssues.setSizePolicy(sizePolicy)
-        self.tableIssues.setObjectName("tableIssues")
-        self.horizontalLayout_3.addWidget(self.tableIssues)
+        sizePolicy.setHeightForWidth(self.listIssues.sizePolicy().hasHeightForWidth())
+        self.listIssues.setSizePolicy(sizePolicy)
+        self.listIssues.setObjectName("listIssues")
+        self.horizontalLayout_3.addWidget(self.listIssues)
         MainWindow.setCentralWidget(self.horizontalSplit)
-        self.menubar = QtGui.QMenuBar()
+        self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtGui.QMenu(self.menubar)
@@ -96,14 +100,4 @@ class Ui_MainWindow(object):
         self.actionUpdate.setText(QtGui.QApplication.translate("MainWindow", "&Update", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAbout_MUComicLoad.setText(QtGui.QApplication.translate("MainWindow", "About MUComicLoad", None, QtGui.QApplication.UnicodeUTF8))
         self.actionHelp.setText(QtGui.QApplication.translate("MainWindow", "&Help", None, QtGui.QApplication.UnicodeUTF8))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtGui.QApplication(sys.argv)
-    MainWindow = QtGui.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
 
