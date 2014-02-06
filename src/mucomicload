@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from MUComicLoad.Database import DB
-from MUComicLoad.startUI import UIStarter
+from MUComic.Database import DB
+from MUComic.startUI import UIStarter
 import argparse
 import configparser
 import os.path

@@ -1,4 +1,4 @@
-import MUComicLoad.UI as UI
+import MUComic.UI as UI
 import sys
 from PySide import QtGui, QtCore
 
