@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-from MUComic.Database import DB
-from MUComic.startUI import UIStarter
+from MUComic import Connector, DB, UIStarter, Api
 import argparse
 import configparser
 import os.path
@@ -36,6 +35,10 @@ if __name__ == "__main__":
 	print(config['MUComicLoad']['database'])
 	db = DB(config['MUComicLoad']['database'])
 
+	api = Api("","")
 
-	app = UIStarter(db, None)
+	conn = Connector(db, api)
+
+	app = UIStarter(conn)
+	app.start()
 

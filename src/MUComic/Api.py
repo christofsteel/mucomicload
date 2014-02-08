@@ -2,8 +2,6 @@ from urllib.request import Request, build_opener, HTTPCookieProcessor
 from urllib.parse import urlencode
 from http.cookiejar import CookieJar
 import json
-#import zipfile
-#import os
 
 
 class Api:
@@ -20,6 +18,7 @@ class Api:
 		self.password = password
 		self.cookiejar = CookieJar()
 		self.opener = build_opener(HTTPCookieProcessor(self.cookiejar))
+		self._connected = False
 
 	#Needed
 	def connect(self):
@@ -28,6 +27,7 @@ class Api:
 		loginData = {'login': self.username, 'password': self.password}
 		loginRequest = Request(self.login_url, data=urlencode(loginData).encode('UTF-8'), headers={'User-Agent': self.user_agent}, origin_req_host='https://secure.marvel.com')
 		response = self.opener.open(loginRequest)
+		self._connected = True
 		return response
 
 	def get_alphabet(self):
@@ -36,6 +36,8 @@ class Api:
 		return jsonresponse['data']['results']
 
 	def get_issue_by_id(self, id):
+		if not self._connected:
+			self.connect()
 		response = self.opener.open(self.issue_url % str(id)).read()
 		jsonresponse = json.loads(str(response, 'UTF-8'))
 		return jsonresponse
@@ -54,4 +56,4 @@ class Api:
 		series = []
 		for char in self.get_alphabet():
 			series += self.get_series_starts_with(char)
-		return [(s['id'], s['title']) for s in series]
+		return series

@@ -1,78 +1,50 @@
-import MUComic.UI as UI
+from MUComic import UI
+from MUComic.Qt.models import IssueModel, SeriesModel
+from MUComic.Qt.threads import PopulateThread, DownloadThread
 import sys
 from PySide import QtGui, QtCore
 
-class SeriesModel(QtCore.QAbstractListModel):
-	def __init__(self, series, parent=None):
-		QtCore.QAbstractListModel.__init__(self, parent)
-		self._series = series
-
-	def rowCount(self,role):
-		return len(self._series)
-
-	def data(self, index, role):
-		if role == QtCore.Qt.DisplayRole:
-			return self._series[index.row()].title
-		elif role == QtCore.Qt.UserRole:
-			return self._series[index.row()]
-		else:
-			return None
-
-class IssueModel(QtCore.QAbstractListModel):
-	def __init__(self, issues, parent=None):
-		QtCore.QAbstractListModel.__init__(self, parent)
-		self._issues = issues
-
-	def rowCount(self, role):
-		return len(self._issues)
-
-	def data(self, index, role):
-		issue = self._issues[index.row()]
-		if role == QtCore.Qt.DisplayRole:
-			return "#%s" % (self.safe_nr(issue.issue_number))
-		elif role == QtCore.Qt.DecorationRole:
-			return QtGui.QIcon('res/test.jpg')
-		else:
-			return None
-
-	def safe_nr(self,nr):
-		if type(nr) is int:
-			return '%03d' % nr
-		elif type(nr) is str:
-			if '.' in nr:
-				split = [int(i) for i in nr.split('.')]
-				split[0] = "%03d" % split[0]
-				return ".".join([str(s) for s in split])
-			else:
-				return self.safe_nr(int(nr))
-		else:
-			print("Unrecognized issue number")
-			return str(nr)
 
 class UIStarter():
+	def populateIssueModel(self, series):
+		# If we have an old populate Thread, kill it
+		if hasattr(self,'populateThread') and self.populateThread.isRunning():
+			self.populateThread.abort()
+			self.populateThread.wait()
+
+		self.issueModel = IssueModel(self.ui.listIssues)
+		self.ui.listIssues.setModel(self.issueModel)
+		self.populateThread = PopulateThread(self.issueModel, series, self.conn)
+		self.populateThread.start()
+		
+	def changeHeader(self, i):
+		self.ui.menuFile.setTitle(str(i))
 	def updateIssues(self, item):
-		series_id = item.data(QtCore.Qt.UserRole)[0]	# Weird, item.data returns 
-														# list instead of NamedTuple
-		newModel = IssueModel(self.db.get_issue_list(series_id), self.ui.listIssues)
-		self.ui.listIssues.setModel(newModel)
-
-	def __init__(self, db, api):
-		self.db = db
-		app = QtGui.QApplication(sys.argv)
-		mw = QtGui.QMainWindow()
+		series = item.data(QtCore.Qt.UserRole)
+		self.populateIssueModel(series)
+	
+	def __init__(self, conn):
+		self.conn = conn
+		self.app = QtGui.QApplication(sys.argv)
+		self.mw = QtGui.QMainWindow()
 		self.ui = UI.Ui_MainWindow()
-		self.ui.setupUi(mw)
+		self.ui.setupUi(self.mw)
+	
+	def start(self):
+		self.seriesmodel = SeriesModel(self.conn.get_faved_series(), self.ui.listComics)
 
-		seriesmodel = SeriesModel(db.get_faved_series(), self.ui.listComics)
+		firstIndex = self.seriesmodel.index(0,0)
+		firstseries = (self.seriesmodel.data(firstIndex,QtCore.Qt.UserRole))
 
-		firstIndex = seriesmodel.index(0,0)
-		firstseries_id = (seriesmodel.data(firstIndex,QtCore.Qt.UserRole)).id
+		self.issuemodel = self.populateIssueModel(firstseries)
 
-		issuemodel = IssueModel(db.get_issue_list(firstseries_id), self.ui.listIssues)
-
-		self.ui.listComics.setModel(seriesmodel)
+		self.ui.listComics.setModel(self.seriesmodel)
 		self.ui.listComics.clicked.connect(self.updateIssues)
-		self.ui.listIssues.setModel(issuemodel)
+		self.ui.listIssues.setModel(self.issuemodel)
 
-		mw.show()
-		app.exec_()
+		updateThread = DownloadThread() 
+		updateThread.downloadingSignal.sig.connect(self.changeHeader)
+		self.ui.actionUpdate.triggered.connect(updateThread.start)
+
+		self.mw.show()
+		sys.exit(self.app.exec_())
