@@ -9,6 +9,19 @@ class downloadFinished(QtCore.QObject):
 class SignalOnAppend(QtCore.QObject):
 	sig = QtCore.Signal()
 
+class UpdateFavedSeriesThread(QtCore.QThread):
+	def __init__(self, model, conn, parent=None):
+		QtCore.QThread.__init__(self, parent)
+		self.model = model
+		self.conn = conn
+
+	def run(self):
+		series = self.conn.get_faved_series()
+		for s in series:
+			self.conn.updateIssues(s)
+			i = self.model.indexFor(s)
+			self.model.setData(i, s)
+
 class DownloadThread(QtCore.QThread):
 	def __init__(self, parent=None):
 		QtCore.QThread.__init__(self, parent)
@@ -37,14 +50,24 @@ class PopulateThread(QtCore.QThread):
 			First populate the List, and then set the thumbnails. If no
 			thumbnail exists, try downloading.
 		"""
-		for issue in self.series.issues:
+		for issue in self.conn.getIssues(self.series):
 			if not self._abort:
 				self.model.append(issue)
 		if not self._abort:
-			for issue in self.series.issues:
+			for issue in self.conn.getIssues(self.series):
 				if not self._abort:
 					if issue.cover == None:
-						print("No Cover for Issue %s" % issue.issue_number)
+						print("Downloading Cover for %s #%s" % (issue.title,
+							issue.issue_number))
 						issue.cover = self.conn.getCover(issue)
 						i = self.model.indexFor(issue)
 						self.model.setData(i, issue)
+
+class AddSeriesThread(QtCore.QThread):
+	def __init__(self, theseries, model, conn, parent=None):
+		QtCore.QThread.__init__(self, parent)
+		self.theseries = theseries
+		self.model = model
+
+	def run(self):
+		pass

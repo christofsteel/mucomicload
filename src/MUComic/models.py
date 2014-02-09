@@ -9,9 +9,14 @@ class Issue:
 		self.title = title
 		self.local = local
 
+	def __eq__(self, other):
+		return self.id == other.id
+
 class Series:
 	def __init__(self, id, title, fav=False):
 		self.id = id
 		self.title = title
 		self.fav = fav
-		self.issues = []
+	
+	def __eq__(self, other):
+		return self.id == other.id

@@ -9,6 +9,22 @@ class SeriesModel(QtCore.QAbstractListModel):
 	def rowCount(self,role):
 		return len(self._series)
 
+	def setDatas(self, series):
+		self._series = series
+		start = self.createIndex(0,0)
+		end = self.createIndex(len(self._series)-1, 0)
+		self.dataChanged.emit(start, end)
+
+	def setData(self, index, value, role=QtCore.Qt.EditRole):
+		if role != QtCore.Qt.EditRole:
+			return False
+		if index.isValid() and 0 <= index.row() < len(self._series):
+			self._series[index.row()] = value
+			self.dataChanged.emit(index, index)
+
+	def indexFor(self, obj):
+		return self.index(self._series.index(obj),0)
+
 	def data(self, index, role):
 		if role == QtCore.Qt.DisplayRole:
 			return self._series[index.row()].title
@@ -70,6 +86,8 @@ class IssueModel(QtCore.QAbstractListModel):
 	def safe_nr(self,nr):
 		if type(nr) is int:
 			return '%03d' % nr
+		elif type(nr) is float:
+			return self.safe_nr(str(nr))
 		elif type(nr) is str:
 			if '.' in nr:
 				split = [int(i) for i in nr.split('.')]
@@ -78,5 +96,5 @@ class IssueModel(QtCore.QAbstractListModel):
 			else:
 				return self.safe_nr(int(nr))
 		else:
-			print("Unrecognized issue number")
+			print("Unrecognized issue number: %s" % nr)
 			return str(nr)

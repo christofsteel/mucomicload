@@ -18,16 +18,16 @@ class Connector:
 		for s in series:
 			self.db.add_series(s)
 
+	def getIssues(self, series):
+		issues = self.db.get_issue_list(series.id)
+		return issues
+
 	def get_series(self, series_id):
 		series = self.db.get_series(series_id)
-		issues = self.db.get_issue_list(series_id)
-		series.issues = issues
 		return series
 
 	def get_faved_series(self):
 		series = self.db.get_faved_series()
-		for s in series:
-			s.issues = [issue for issue in self.db.get_issue_list(s.id)]
 		return series
 
 	def updateIssues(self, series):
@@ -36,13 +36,16 @@ class Connector:
 					Issue(
 						id = json['id'],
 						series_id = series.id,
+						title = series.title,
 						issue_number = json['issue_number'],
-						cover_url = "https://i.annihil.us/u/prod/marvel%s/portrait_large.jpg" % json['image_url']
+						cover_url =
+							"https://i.annihil.us/u/prod/marvel%s/portrait_xlarge.jpg" % json['image_url']
 						)
 						for json in jsonissues
 					]
 		for issue in issues:
 			self.db.add_issue(issue)
+		return issues
 
 	def getCover(self, issue):
 		try:
