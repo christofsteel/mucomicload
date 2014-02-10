@@ -5,7 +5,7 @@ import hashlib
 import re
 
 class Issue:
-	def __init__(self, id, series_id, issue_number, cover_url = None, title=None, local=False):
+	def __init__(self, id, series_id, issue_number, cover_url = None, title=None):
 		self.id = id
 		self.series_id = series_id
 		self.issue_number = issue_number
@@ -18,7 +18,6 @@ class Issue:
 		safetitle = re.sub('[^\w\-_\.\(\) ]', '',self.title)
 		self.cbzpath = os.path.join(app.user_data_dir,'comics',safetitle)
 		self.cbzfile = os.path.join(self.cbzpath ,'%s %s (%s).cbz' % (self.title, self.safe_nr, self.id))
-		self.local = local
 
 	def __eq__(self, other):
 		return self.id == other.id
@@ -38,6 +37,9 @@ class Issue:
 		else:
 			print("Unrecognized issue number: %s" % nr)
 			return str(nr)
+
+	def local(self):
+		return os.path.exists(self.cbzfile)
 
 	def cover(self):
 		try:

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mainWindow.ui'
+# Form implementation generated from reading ui file 'res/mainWindow.ui'
 #
-# Created: Wed Feb  5 20:04:06 2014
+# Created: Mon Feb 10 21:58:53 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -15,35 +15,34 @@ class Ui_MainWindow(object):
         MainWindow.resize(800, 600)
         self.horizontalSplit = QtGui.QWidget(MainWindow)
         self.horizontalSplit.setObjectName("horizontalSplit")
-        self.horizontalLayout_3 = QtGui.QHBoxLayout(self.horizontalSplit)
-        self.horizontalLayout_3.setSpacing(4)
-        self.horizontalLayout_3.setContentsMargins(4, 4, 4, 4)
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.splitter =QtGui.QSplitter(QtCore.Qt.Horizontal)
-        self.horizontalLayout_3.addWidget(self.splitter)
-        self.listComics = QtGui.QListView(self.horizontalSplit)
+        self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalSplit)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.splitter = QtGui.QSplitter(self.horizontalSplit)
+        self.splitter.setOrientation(QtCore.Qt.Horizontal)
+        self.splitter.setObjectName("splitter")
+        self.listComics = QtGui.QListView(self.splitter)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.listComics.sizePolicy().hasHeightForWidth())
-
-
         self.listComics.setSizePolicy(sizePolicy)
+        self.listComics.setAlternatingRowColors(True)
         self.listComics.setObjectName("listComics")
-
-        self.splitter.addWidget(self.listComics)
-        self.listIssues = QtGui.QListView(self.horizontalSplit)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Expanding)
+        self.listIssues = QtGui.QListView(self.splitter)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.listIssues.sizePolicy().hasHeightForWidth())
         self.listIssues.setSizePolicy(sizePolicy)
-        self.listIssues.setObjectName("listIssues")
+        self.listIssues.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        self.listIssues.setIconSize(QtCore.QSize(128, 128))
+        self.listIssues.setMovement(QtGui.QListView.Static)
+        self.listIssues.setResizeMode(QtGui.QListView.Adjust)
         self.listIssues.setViewMode(QtGui.QListView.IconMode)
-        self.listIssues.setIconSize(QtCore.QSize(128,128))
-        self.splitter.addWidget(self.listIssues)
+        self.listIssues.setObjectName("listIssues")
+        self.horizontalLayout.addWidget(self.splitter)
         MainWindow.setCentralWidget(self.horizontalSplit)
-        self.menubar = QtGui.QMenuBar()
+        self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtGui.QMenu(self.menubar)
@@ -56,16 +55,31 @@ class Ui_MainWindow(object):
         self.toolBar.setObjectName("toolBar")
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.menuFileSettings = QtGui.QAction(MainWindow)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/res/settings.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.menuFileSettings.setIcon(icon)
         self.menuFileSettings.setObjectName("menuFileSettings")
         self.menuFileQuit = QtGui.QAction(MainWindow)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/res/exit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.menuFileQuit.setIcon(icon1)
         self.menuFileQuit.setObjectName("menuFileQuit")
         self.actionAdd_series = QtGui.QAction(MainWindow)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/res/addseries.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionAdd_series.setIcon(icon2)
         self.actionAdd_series.setObjectName("actionAdd_series")
         self.actionUpdate = QtGui.QAction(MainWindow)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(":/res/update.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionUpdate.setIcon(icon3)
         self.actionUpdate.setObjectName("actionUpdate")
         self.actionAbout_MUComicLoad = QtGui.QAction(MainWindow)
         self.actionAbout_MUComicLoad.setObjectName("actionAbout_MUComicLoad")
         self.actionHelp = QtGui.QAction(MainWindow)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/res/help.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionHelp.setIcon(icon4)
         self.actionHelp.setObjectName("actionHelp")
         self.menuFile.addAction(self.actionUpdate)
         self.menuFile.addAction(self.actionAdd_series)
@@ -82,19 +96,6 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionAdd_series)
         self.toolBar.addAction(self.menuFileSettings)
         self.toolBar.addAction(self.actionHelp)
-        """
-        self.actionAdd_series.setIcon(QtGui.QIcon.fromTheme('application-exit', self.horizontalSplit.style().standardIcon(QtGui.QStyle.SP_FileDialogNewFolder)))
-        self.actionUpdate.setIcon(self.horizontalSplit.style().standardIcon(QtGui.QStyle.SP_BrowserReload))
-        self.menuFileSettings.setIcon(self.horizontalSplit.style().standardIcon(QtGui.QStyle.SP_TitleBarContextHelpButton))
-        self.actionHelp.setIcon(self.horizontalSplit.style().standardIcon(QtGui.QStyle.SP_DialogHelpButton))
-        self.menuFileQuit.setIcon(self.horizontalSplit.style().standardIcon(QtGui.QStyle.SP_TitleBarCloseButton))
-        """
-        self.actionAdd_series.setIcon(QtGui.QIcon('res/addseries.png'))
-        self.actionUpdate.setIcon(QtGui.QIcon('res/update.png'))
-        self.menuFileSettings.setIcon(QtGui.QIcon('res/settings.png'))
-        self.actionHelp.setIcon(QtGui.QIcon('res/help.png'))
-        self.menuFileQuit.setIcon(QtGui.QIcon('res/exit.png'))
-
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -111,3 +112,4 @@ class Ui_MainWindow(object):
         self.actionAbout_MUComicLoad.setText(QtGui.QApplication.translate("MainWindow", "About MUComicLoad", None, QtGui.QApplication.UnicodeUTF8))
         self.actionHelp.setText(QtGui.QApplication.translate("MainWindow", "&Help", None, QtGui.QApplication.UnicodeUTF8))
 
+import MUComic.mucomicload_rc

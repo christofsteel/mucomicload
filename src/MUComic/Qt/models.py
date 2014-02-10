@@ -69,7 +69,7 @@ class IssueModel(QtCore.QAbstractListModel):
 			else:
 				img = open('res/missing.png', 'rb').read()
 				qimg = QtGui.QImage.fromData(img, 'png')
-			if issue.local:
+			if issue.local():
 				okpix = QtGui.QPixmap('res/ok.png')
 			else:
 				okpix = QtGui.QPixmap('res/notok.png')
