@@ -1,5 +1,7 @@
 from MUComic.models import Issue, Series
+import os.path
 from urllib.request import urlopen
+import zipfile
 
 class Connector:
 	def __init__(self, db, api):
@@ -34,7 +36,7 @@ class Connector:
 		jsonissues = self.api.get_series_by_id(series.id)
 		issues = [
 					Issue(
-						id = json['id'],
+						id = json['digital_id'],
 						series_id = series.id,
 						title = series.title,
 						issue_number = json['issue_number'],
@@ -47,13 +49,18 @@ class Connector:
 			self.db.add_issue(issue)
 		return issues
 
-	def getCover(self, issue):
-		try:
-			url = urlopen(issue.cover_url)
-			data = url.read()
-			self.db.set_issue_cover(issue, data)
-			return data
-		except:
-			print("Could not download cover for \"%s #%s\"" % (issue.title,
-				issue.issue_number))
-			return None
+	def downloadIssue(self, issue):
+		print("start Downloading")
+		pages = self.api.get_issue_by_id(issue.id)['pages']
+		links = [page['cdnUrls']['jpg_75']['scalar'] for page in pages if page['cdnUrls']
+				!= {}]
+		if not os.path.isdir(issue.cbzpath):
+			os.makedirs(issue.cbzpath)
+		filename = issue.cbzfile
+		comiczip = zipfile.ZipFile(filename, mode='w')
+		for k, url in enumerate(links):
+			print("page %s" % k)
+			image = urlopen(url).read()
+			comiczip.writestr('img_%02d.jpg' % k, image)
+		comiczip.close()
+		print('"%s" Downloaded' % issue.cbzpath)

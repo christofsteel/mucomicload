@@ -62,10 +62,10 @@ class IssueModel(QtCore.QAbstractListModel):
 	def data(self, index, role):
 		issue = self._issues[index.row()]
 		if role == QtCore.Qt.DisplayRole:
-			return "#%s" % (self.safe_nr(issue.issue_number))
+			return "#%s" % (issue.safe_nr)
 		elif role == QtCore.Qt.DecorationRole:
-			if issue.cover != None:
-				qimg = QtGui.QImage.fromData(issue.cover, 'JPG')
+			if issue.hasCover():
+				qimg = QtGui.QImage.fromData(issue.cover(), 'JPG')
 			else:
 				img = open('res/missing.png', 'rb').read()
 				qimg = QtGui.QImage.fromData(img, 'png')
@@ -80,21 +80,8 @@ class IssueModel(QtCore.QAbstractListModel):
 			painter.drawPixmap(qrect.width()-64,qrect.height()-64,miniokpix)
 			painter.end()
 			return QtGui.QIcon(qpix)
+		elif role == QtCore.Qt.UserRole:
+			return issue
 		else:
 			return None
 
-	def safe_nr(self,nr):
-		if type(nr) is int:
-			return '%03d' % nr
-		elif type(nr) is float:
-			return self.safe_nr(str(nr))
-		elif type(nr) is str:
-			if '.' in nr:
-				split = [int(i) for i in nr.split('.')]
-				split[0] = "%03d" % split[0]
-				return ".".join([str(s) for s in split])
-			else:
-				return self.safe_nr(int(nr))
-		else:
-			print("Unrecognized issue number: %s" % nr)
-			return str(nr)

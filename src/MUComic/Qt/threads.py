@@ -23,16 +23,13 @@ class UpdateFavedSeriesThread(QtCore.QThread):
 			self.model.setData(i, s)
 
 class DownloadThread(QtCore.QThread):
-	def __init__(self, parent=None):
+	def __init__(self, issue, conn,parent=None):
 		QtCore.QThread.__init__(self, parent)
-		self.downloadingSignal = downloading()
-		self.finishedDownloading = downloadFinished()
+		self.issue = issue
+		self.conn = conn
 
 	def run(self):
-		for i in range(101):
-			self.msleep(100)
-			self.downloadingSignal.sig.emit(i)
-		self.finishedDownloading.sig.emit()
+		self.conn.downloadIssue(self.issue)
 
 class PopulateThread(QtCore.QThread):
 	def __init__(self, model, series, conn, parent=None):
@@ -56,10 +53,10 @@ class PopulateThread(QtCore.QThread):
 		if not self._abort:
 			for issue in self.conn.getIssues(self.series):
 				if not self._abort:
-					if issue.cover == None:
+					if not issue.hasCover():
 						print("Downloading Cover for %s #%s" % (issue.title,
 							issue.issue_number))
-						issue.cover = self.conn.getCover(issue)
+						issue.getCover()
 						i = self.model.indexFor(issue)
 						self.model.setData(i, issue)
 

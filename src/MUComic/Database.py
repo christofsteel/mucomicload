@@ -6,7 +6,7 @@ from MUComic.models import Issue, Series
 		Table Series:
 			id | title | fav
 		Table Issue:
-			id | series_id | issue_number | cover_url | cover_img | local	
+			id | series_id | issue_number | cover_url | local	
 """
 class DB:
 	def __init__(self, db_path):
@@ -14,7 +14,7 @@ class DB:
 		conn = sqlite3.connect(db_path)
 		c = conn.cursor()
 		c.execute("CREATE TABLE IF NOT EXISTS series(id integer primary key, title unique, fav integer);")
-		c.execute("CREATE TABLE IF NOT EXISTS issues(id integer primary key, series_id integer, issue_number string, cover_url string, cover_img blob, local integer);")
+		c.execute("CREATE TABLE IF NOT EXISTS issues(id integer primary key, series_id integer, issue_number string, cover_url string, local integer);")
 		c.close()
 		conn.commit()
 		conn.close()
@@ -31,19 +31,14 @@ class DB:
 		conn = sqlite3.connect(self.db_path)
 		c = conn.cursor()
 		print('DEBUG: Adding %s %s' % (issue.title, issue.issue_number))
-		c.execute("INSERT OR IGNORE INTO issues (id,series_id,issue_number,cover_url, cover_img, local) values (?,?,?,?,?,?)", (issue.id, issue.series_id, issue.issue_number,issue.cover_url, issue.cover, issue.local))
+		c.execute("INSERT OR IGNORE INTO issues (id,series_id,issue_number,cover_url, local) values (?,?,?,?,?)", (issue.id, issue.series_id,
+				issue.issue_number,issue.cover_url, issue.local))
 		c.close()
 		conn.commit()
 		conn.close()
 	
 	def set_issue_cover(self, issue, image):
-		conn = sqlite3.connect(self.db_path)
-		c = conn.cursor()
-		c.execute("UPDATE issues set cover_img = ? where id = ?", (image,
-			issue.id))
-		c.close()
-		conn.commit()
-		conn.close()
+		print("This Function is Deprecated")
 
 	def update(self, api, v = 0):
 		conn = sqlite3.connect(self.db_path)
@@ -92,7 +87,7 @@ class DB:
 		conn = sqlite3.connect(self.db_path)
 		c = conn.cursor()
 		print("DEBUG: Get Issue List (%s)" % series_id)
-		result = c.execute('select issues.id, series.id, issue_number, cover_url, cover_img, title, local from issues join series on issues.series_id == series.id where series_id == ? order by cast(issue_number as real)', (series_id,))
+		result = c.execute('select issues.id, series.id, issue_number, cover_url, title, local from issues join series on issues.series_id == series.id where series_id == ? order by cast(issue_number as real)', (series_id,))
 		issues = [Issue(*row) for row in result]
 		c.close()
 		conn.close()
@@ -108,7 +103,7 @@ class DB:
 	def get_issue(self, issue_id):
 		conn = sqlite3.connect(self.db_path)
 		c = conn.cursor()
-		result = c.execute('select issues.id, series_id, issue_number, cover_url, cover_img, title, local from issues join series on issues.series_id == series.id where issues.id == ?', (issue_id,)).fetchone()
+		result = c.execute('select issues.id, series_id, issue_number, cover_url, title, local from issues join series on issues.series_id == series.id where issues.id == ?', (issue_id,)).fetchone()
 		conn.close()
 		return Issue(*result)
 

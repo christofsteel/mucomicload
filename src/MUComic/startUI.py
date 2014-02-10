@@ -1,6 +1,6 @@
 from MUComic import UI
 from MUComic.Qt.models import IssueModel, SeriesModel
-from MUComic.Qt.threads import PopulateThread, DownloadThread, UpdateFavedSeriesThread
+from MUComic.Qt.threads import PopulateThread, UpdateFavedSeriesThread,DownloadThread
 import sys
 from PySide import QtGui, QtCore
 
@@ -13,6 +13,10 @@ class UIStarter():
 		self.updateThread = UpdateFavedSeriesThread(self.seriesmodel, self.conn)
 		self.updateThread.start()
 
+	def downloadIssue(self):
+		issue = self.ui.listIssues.model().data(self.ui.listIssues.currentIndex(),QtCore.Qt.UserRole)
+		downloadThread = DownloadThread(issue,self.conn,self.mw)
+		downloadThread.start()
 
 	def addSeries(self):
 		series_id, ok = QtGui.QInputDialog.getInt(self.mw, "Add Series", "Enter Series ID")
@@ -22,7 +26,6 @@ class UIStarter():
 	def updateSeriesModel(self):
 		faved_series = self.conn.get_faved_series()
 		self.seriesmodel.setDatas(faved_series)
-
 
 	def populateIssueModel(self, series):
 		# If we have an old populate Thread, kill it
@@ -45,6 +48,10 @@ class UIStarter():
 		self.mw = QtGui.QMainWindow()
 		self.ui = UI.Ui_MainWindow()
 		self.ui.setupUi(self.mw)
+		self.ui.listIssues.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+		a = QtGui.QAction("Download", self.ui.listIssues)
+		a.triggered.connect(self.downloadIssue)
+		self.ui.listIssues.addAction(a)
 	
 	def start(self):
 		self.seriesmodel = SeriesModel(self.conn.get_faved_series(), self.ui.listComics)
