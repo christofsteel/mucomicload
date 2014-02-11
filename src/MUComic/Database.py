@@ -30,7 +30,6 @@ class DB:
 	def add_issue(self, issue):
 		conn = sqlite3.connect(self.db_path)
 		c = conn.cursor()
-		print('DEBUG: Adding %s %s' % (issue.title, issue.issue_number))
 		c.execute("INSERT OR IGNORE INTO issues (id,series_id,issue_number,cover_url) values (?,?,?,?)", (issue.id, issue.series_id,
 				issue.issue_number,issue.cover_url))
 		c.close()
@@ -83,11 +82,13 @@ class DB:
 		conn.close()
 		return Series(*result)
 
-	def get_issue_list(self, series_id):
+	def get_issue_list(self, series_id, limit=0):
 		conn = sqlite3.connect(self.db_path)
 		c = conn.cursor()
-		print("DEBUG: Get Issue List (%s)" % series_id)
-		result = c.execute('select issues.id, series.id, issue_number, cover_url, title from issues join series on issues.series_id == series.id where series_id == ? order by cast(issue_number as real)', (series_id,))
+		if limit:
+			result = c.execute('select issues.id, series.id, issue_number, cover_url, title from issues join series on issues.series_id == series.id where series_id == ? order by cast(issue_number as real) limit ?', (series_id,limit))
+		else:
+			result = c.execute('select issues.id, series.id, issue_number, cover_url, title from issues join series on issues.series_id == series.id where series_id == ? order by cast(issue_number as real)', (series_id,))
 		issues = [Issue(*row) for row in result]
 		c.close()
 		conn.close()

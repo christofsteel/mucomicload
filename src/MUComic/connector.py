@@ -64,3 +64,11 @@ class Connector:
 			comiczip.writestr('img_%02d.jpg' % k, image)
 		comiczip.close()
 		print('"%s" Downloaded' % issue.cbzpath)
+
+	def getFirstCover(self, series):
+		maybeFirst = self.db.get_issue_list(series.id, 1)
+		if maybeFirst:
+			firstIssue = maybeFirst[0]
+			return firstIssue.cover()
+		else:
+			return None

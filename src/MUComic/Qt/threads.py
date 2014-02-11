@@ -10,10 +10,10 @@ class SignalOnAppend(QtCore.QObject):
 	sig = QtCore.Signal()
 
 class UpdateFavedSeriesThread(QtCore.QThread):
-	def __init__(self, model, conn, parent=None):
+	def __init__(self, model, parent=None):
 		QtCore.QThread.__init__(self, parent)
 		self.model = model
-		self.conn = conn
+		self.conn = model.conn
 
 	def run(self):
 		series = self.conn.get_faved_series()

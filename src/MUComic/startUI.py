@@ -1,4 +1,4 @@
-from MUComic import UI
+from MUComic import UI, settingsWindow
 from MUComic.Qt.models import IssueModel, SeriesModel
 from MUComic.Qt.threads import PopulateThread, UpdateFavedSeriesThread,DownloadThread
 import sys
@@ -10,8 +10,12 @@ class UIStarter():
 	def updateFavedSeries(self):
 		if hasattr(self,'updateThread') and self.updateThread.isRunning():
 			self.updateThread.wait()
-		self.updateThread = UpdateFavedSeriesThread(self.seriesmodel, self.conn)
-		self.updateThread.start()
+		else:
+			self.updateThread = UpdateFavedSeriesThread(self.seriesmodel)
+			self.updateThread.started.connect(lambda:self.ui.actionUpdate.setDisabled(True))
+			self.updateThread.finished.connect(lambda:self.ui.actionUpdate.setDisabled(False))
+			self.updateThread.terminated.connect(lambda:self.ui.actionUpdate.setDisabled(False))
+			self.updateThread.start()
 
 	def downloadIssue(self):
 		issue = self.ui.listIssues.model().data(self.ui.listIssues.currentIndex(),QtCore.Qt.UserRole)
@@ -49,12 +53,16 @@ class UIStarter():
 		self.ui = UI.Ui_MainWindow()
 		self.ui.setupUi(self.mw)
 		self.ui.listIssues.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-		a = QtGui.QAction("Download", self.ui.listIssues)
-		a.triggered.connect(self.downloadIssue)
-		self.ui.listIssues.addAction(a)
+		self.ui.actionDownload.triggered.connect(self.downloadIssue)
+		self.ui.listIssues.addAction(self.ui.actionDownload)
+
+		self.settingswindow = settingsWindow.Ui_Form()
+		self.settingswindowform = QtGui.QDialog()
+		self.settingswindow.setupUi(self.settingswindowform)
+		self.ui.menuFileSettings.triggered.connect(self.settingswindowform.show)
 	
 	def start(self):
-		self.seriesmodel = SeriesModel(self.conn.get_faved_series(), self.ui.listComics)
+		self.seriesmodel = SeriesModel(self.conn.get_faved_series(), self.conn, self.ui.listComics)
 
 		firstIndex = self.seriesmodel.index(0,0)
 		firstseries = (self.seriesmodel.data(firstIndex,QtCore.Qt.UserRole))

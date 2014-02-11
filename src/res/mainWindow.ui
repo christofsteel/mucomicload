@@ -11,7 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>MUComicLoad</string>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>true</bool>
   </property>
   <widget class="QWidget" name="horizontalSplit">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -29,6 +32,12 @@
        </property>
        <property name="alternatingRowColors">
         <bool>true</bool>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>64</width>
+         <height>64</height>
+        </size>
        </property>
       </widget>
       <widget class="QListView" name="listIssues">
@@ -107,6 +116,7 @@
    </attribute>
    <addaction name="actionUpdate"/>
    <addaction name="actionAdd_series"/>
+   <addaction name="actionDownload"/>
    <addaction name="menuFileSettings"/>
    <addaction name="actionHelp"/>
   </widget>
@@ -158,6 +168,15 @@
    </property>
    <property name="text">
     <string>&amp;Help</string>
+   </property>
+  </action>
+  <action name="actionDownload">
+   <property name="icon">
+    <iconset resource="mucomicload.qrc">
+     <normaloff>:/res/download.png</normaloff>:/res/download.png</iconset>
+   </property>
+   <property name="text">
+    <string>Download</string>
    </property>
   </action>
  </widget>

@@ -2,9 +2,10 @@ from PySide import QtCore, QtGui
 
 
 class SeriesModel(QtCore.QAbstractListModel):
-	def __init__(self, series, parent=None):
+	def __init__(self, series, conn, parent=None):
 		QtCore.QAbstractListModel.__init__(self, parent)
 		self._series = series
+		self.conn = conn
 
 	def rowCount(self,role):
 		return len(self._series)
@@ -28,6 +29,15 @@ class SeriesModel(QtCore.QAbstractListModel):
 	def data(self, index, role):
 		if role == QtCore.Qt.DisplayRole:
 			return self._series[index.row()].title
+		elif role == QtCore.Qt.DecorationRole:
+			img = self.conn.getFirstCover(self._series[index.row()])
+			if img:
+				qimg = QtGui.QImage.fromData(img, 'JPG')
+			else:
+				img = open('res/missing.png', 'rb').read()
+				qimg = QtGui.QImage.fromData(img, 'png')
+			qpix = QtGui.QPixmap.fromImage(qimg)
+			return QtGui.QIcon(qpix)
 		elif role == QtCore.Qt.UserRole:
 			return self._series[index.row()]
 		else:
