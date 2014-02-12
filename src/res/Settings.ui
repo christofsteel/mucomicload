@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>532</width>
-    <height>181</height>
+    <width>546</width>
+    <height>185</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,97 +22,114 @@
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
   </property>
-  <layout class="QFormLayout" name="formLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="lb_username">
-     <property name="text">
-      <string>Username:</string>
-     </property>
-     <property name="buddy">
-      <cstring>le_username</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="le_username"/>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="lb_passwd">
-     <property name="text">
-      <string>Password:</string>
-     </property>
-     <property name="buddy">
-      <cstring>le_passwd</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="le_passwd">
-     <property name="echoMode">
-      <enum>QLineEdit::Password</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0" colspan="2">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="lb_comicViewer">
-     <property name="text">
-      <string>Comic viewer</string>
-     </property>
-     <property name="buddy">
-      <cstring>le_comicViewer</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLineEdit" name="le_comicViewer">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="lb_username">
        <property name="text">
-        <string>/usr/bin/mcomix</string>
+        <string>Username:</string>
+       </property>
+       <property name="buddy">
+        <cstring>le_username</cstring>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QPushButton" name="btn_comicViewer">
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="le_username"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="lb_passwd">
        <property name="text">
-        <string>Browse</string>
+        <string>Password:</string>
+       </property>
+       <property name="buddy">
+        <cstring>le_passwd</cstring>
        </property>
       </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="le_passwd">
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0" colspan="2">
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="lb_comicViewer">
+       <property name="text">
+        <string>Comic viewer</string>
+       </property>
+       <property name="buddy">
+        <cstring>le_comicViewer</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLineEdit" name="le_comicViewer">
+         <property name="minimumSize">
+          <size>
+           <width>300</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_comicViewer">
+         <property name="text">
+          <string>Browse</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="lb_download">
+       <property name="text">
+        <string>Download Directory:</string>
+       </property>
+       <property name="buddy">
+        <cstring>le_download</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLineEdit" name="le_download">
+         <property name="minimumSize">
+          <size>
+           <width>300</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_download">
+         <property name="text">
+          <string>Browse</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="lb_download">
-     <property name="text">
-      <string>Download Directory:</string>
-     </property>
-     <property name="buddy">
-      <cstring>le_download</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QLineEdit" name="le_download"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_download">
-       <property name="text">
-        <string>Browse</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="5" column="0" colspan="2">
+   <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
