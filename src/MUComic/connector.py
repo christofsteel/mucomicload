@@ -75,6 +75,8 @@ class Connector:
 		else:
 			return None
 
-	def setComicViewer(self, cv):
-		self.config.set("MUComicLoad", "comicviewer", cv)
+	def updateConfig(self):
+		with open(Paths.configfile, 'w') as config:
+			self.config.write(config)
+		self.api = Api(self.config['MUComicLoad']['username'], self.config['MUComicLoad']['password'])
 

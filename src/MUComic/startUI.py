@@ -56,6 +56,26 @@ class UIStarter():
 	def updateIssuesModel(self, item):
 		series = item.data(QtCore.Qt.UserRole)
 		self.populateIssueModel(series)
+
+	def updateConfig(self):
+		self.conn.config.set("MUComicLoad","username",
+				self.settingswindow.le_username.text())
+		self.conn.config.set("MUComicLoad","password",
+				self.settingswindow.le_passwd.text())
+		self.conn.config.set("MUComicLoad","comicviewer",
+				self.settingswindow.le_comicViewer.text())
+		self.conn.config.set("MUComicLoad","downloaddir",
+				self.settingswindow.le_download.text())
+		self.conn.updateConfig()
+		self.settingswindowform.close()
+
+	def revertConfig(self):
+		self.settingswindow.le_username.setText(self.conn.config['MUComicLoad']['username'])
+		self.settingswindow.le_passwd.setText(self.conn.config['MUComicLoad']['password'])
+		self.settingswindow.le_comicViewer.setText(self.conn.config['MUComicLoad']['comicviewer'])
+		self.settingswindow.le_download.setText(self.conn.config['MUComicLoad']['downloaddir'])
+		self.settingswindowform.close()
+
 	
 	def browseComicViewerClicked(self):
 		comicViewer, snd = QtGui.QFileDialog.getOpenFileName()
@@ -86,6 +106,8 @@ class UIStarter():
 		self.settingswindow.le_download.setText(self.conn.config['MUComicLoad']['downloaddir'])
 		self.settingswindow.btn_comicViewer.clicked.connect(self.browseComicViewerClicked)
 		self.settingswindow.btn_download.clicked.connect(self.browseDownloadDirClicked)
+		self.settingswindow.buttonBox.accepted.connect(self.updateConfig)
+		self.settingswindow.buttonBox.rejected.connect(self.revertConfig)
 
 		self.ui.menuFileSettings.triggered.connect(self.settingswindowform.show)
 	

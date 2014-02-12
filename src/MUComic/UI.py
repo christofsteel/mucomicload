@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'res/mainWindow.ui'
 #
-# Created: Wed Feb 12 02:55:55 2014
+# Created: Wed Feb 12 05:35:21 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -44,7 +44,7 @@ class Ui_MainWindow(object):
 		self.listIssues.setObjectName("listIssues")
 		self.horizontalLayout.addWidget(self.splitter)
 		MainWindow.setCentralWidget(self.horizontalSplit)
-		self.menubar = QtGui.QMenuBar(MainWindow)
+		self.menubar = QtGui.QMenuBar()
 		self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
 		self.menubar.setDefaultUp(False)
 		self.menubar.setObjectName("menubar")
@@ -85,15 +85,10 @@ class Ui_MainWindow(object):
 		self.actionUpdate.setObjectName("actionUpdate")
 		self.actionAbout_MUComicLoad = QtGui.QAction(MainWindow)
 		self.actionAbout_MUComicLoad.setObjectName("actionAbout_MUComicLoad")
-		self.actionHelp = QtGui.QAction(MainWindow)
-		icon4 = QtGui.QIcon()
-		icon4.addPixmap(QtGui.QPixmap(":/res/help.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		self.actionHelp.setIcon(icon4)
-		self.actionHelp.setObjectName("actionHelp")
 		self.actionDownload = QtGui.QAction(MainWindow)
-		icon5 = QtGui.QIcon()
-		icon5.addPixmap(QtGui.QPixmap(":/res/download.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		self.actionDownload.setIcon(icon5)
+		icon4 = QtGui.QIcon()
+		icon4.addPixmap(QtGui.QPixmap(":/res/download.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		self.actionDownload.setIcon(icon4)
 		self.actionDownload.setObjectName("actionDownload")
 		self.menuFile.addAction(self.actionUpdate)
 		self.menuFile.addAction(self.actionAdd_series)
@@ -101,7 +96,6 @@ class Ui_MainWindow(object):
 		self.menuFile.addAction(self.menuFileSettings)
 		self.menuFile.addSeparator()
 		self.menuFile.addAction(self.menuFileQuit)
-		self.menuHelp.addAction(self.actionHelp)
 		self.menuHelp.addSeparator()
 		self.menuHelp.addAction(self.actionAbout_MUComicLoad)
 		self.menubar.addAction(self.menuFile.menuAction())
@@ -110,7 +104,6 @@ class Ui_MainWindow(object):
 		self.toolBar.addAction(self.actionAdd_series)
 		self.toolBar.addAction(self.actionDownload)
 		self.toolBar.addAction(self.menuFileSettings)
-		self.toolBar.addAction(self.actionHelp)
 
 		self.retranslateUi(MainWindow)
 		QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -125,7 +118,6 @@ class Ui_MainWindow(object):
 		self.actionAdd_series.setText(QtGui.QApplication.translate("MainWindow", "&Add series", None, QtGui.QApplication.UnicodeUTF8))
 		self.actionUpdate.setText(QtGui.QApplication.translate("MainWindow", "&Update", None, QtGui.QApplication.UnicodeUTF8))
 		self.actionAbout_MUComicLoad.setText(QtGui.QApplication.translate("MainWindow", "&About MUComicLoad", None, QtGui.QApplication.UnicodeUTF8))
-		self.actionHelp.setText(QtGui.QApplication.translate("MainWindow", "&Help", None, QtGui.QApplication.UnicodeUTF8))
 		self.actionDownload.setText(QtGui.QApplication.translate("MainWindow", "Download", None, QtGui.QApplication.UnicodeUTF8))
 
 import MUComic.mucomicload_rc
