@@ -72,7 +72,7 @@ class Ui_MainWindow(object):
 		self.menuFileSettings.setIcon(icon)
 		self.menuFileSettings.setObjectName("menuFileSettings")
 		self.menuFileQuit = QtGui.QAction(MainWindow)
-		icon1 = QtGui.QIcon.fromTheme('application-exit',QtGui.QICon(":/res/exit.png"))
+		icon1 = QtGui.QIcon.fromTheme('application-exit',QtGui.QIcon(":/res/exit.png"))
 		self.menuFileQuit.setIcon(icon1)
 		self.menuFileQuit.setObjectName("menuFileQuit")
 		self.actionAdd_series = QtGui.QAction(MainWindow)
