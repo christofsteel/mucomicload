@@ -18,8 +18,20 @@
   </property>
   <widget class="QWidget" name="horizontalSplit">
    <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="sizeConstraint">
+     <enum>QLayout::SetDefaultConstraint</enum>
+    </property>
+    <property name="margin">
+     <number>0</number>
+    </property>
     <item>
      <widget class="QSplitter" name="splitter">
+      <property name="lineWidth">
+       <number>1</number>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
