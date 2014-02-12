@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'res/Settings.ui'
 #
-# Created: Tue Feb 11 17:06:15 2014
+# Created: Wed Feb 12 00:40:38 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,6 +13,11 @@ class Ui_Form(object):
 	def setupUi(self, Form):
 		Form.setObjectName("Form")
 		Form.resize(532, 181)
+		sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+		sizePolicy.setHorizontalStretch(0)
+		sizePolicy.setVerticalStretch(0)
+		sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
+		Form.setSizePolicy(sizePolicy)
 		Form.setLayoutDirection(QtCore.Qt.LeftToRight)
 		self.formLayout = QtGui.QFormLayout(Form)
 		self.formLayout.setObjectName("formLayout")
@@ -42,10 +47,7 @@ class Ui_Form(object):
 		self.le_comicViewer = QtGui.QLineEdit(Form)
 		self.le_comicViewer.setObjectName("le_comicViewer")
 		self.horizontalLayout.addWidget(self.le_comicViewer)
-		self.btn_comicViewer = QtGui.QToolButton(Form)
-		self.btn_comicViewer.setCheckable(False)
-		self.btn_comicViewer.setPopupMode(QtGui.QToolButton.DelayedPopup)
-		self.btn_comicViewer.setArrowType(QtCore.Qt.NoArrow)
+		self.btn_comicViewer = QtGui.QPushButton(Form)
 		self.btn_comicViewer.setObjectName("btn_comicViewer")
 		self.horizontalLayout.addWidget(self.btn_comicViewer)
 		self.formLayout.setLayout(3, QtGui.QFormLayout.FieldRole, self.horizontalLayout)
@@ -57,7 +59,7 @@ class Ui_Form(object):
 		self.le_download = QtGui.QLineEdit(Form)
 		self.le_download.setObjectName("le_download")
 		self.horizontalLayout_2.addWidget(self.le_download)
-		self.btn_download = QtGui.QToolButton(Form)
+		self.btn_download = QtGui.QPushButton(Form)
 		self.btn_download.setObjectName("btn_download")
 		self.horizontalLayout_2.addWidget(self.btn_download)
 		self.formLayout.setLayout(4, QtGui.QFormLayout.FieldRole, self.horizontalLayout_2)
@@ -79,7 +81,7 @@ class Ui_Form(object):
 		self.lb_passwd.setText(QtGui.QApplication.translate("Form", "Password:", None, QtGui.QApplication.UnicodeUTF8))
 		self.lb_comicViewer.setText(QtGui.QApplication.translate("Form", "Comic viewer", None, QtGui.QApplication.UnicodeUTF8))
 		self.le_comicViewer.setText(QtGui.QApplication.translate("Form", "/usr/bin/mcomix", None, QtGui.QApplication.UnicodeUTF8))
-		self.btn_comicViewer.setText(QtGui.QApplication.translate("Form", "...", None, QtGui.QApplication.UnicodeUTF8))
+		self.btn_comicViewer.setText(QtGui.QApplication.translate("Form", "Browse", None, QtGui.QApplication.UnicodeUTF8))
 		self.lb_download.setText(QtGui.QApplication.translate("Form", "Download Directory:", None, QtGui.QApplication.UnicodeUTF8))
-		self.btn_download.setText(QtGui.QApplication.translate("Form", "...", None, QtGui.QApplication.UnicodeUTF8))
+		self.btn_download.setText(QtGui.QApplication.translate("Form", "Browse", None, QtGui.QApplication.UnicodeUTF8))
 

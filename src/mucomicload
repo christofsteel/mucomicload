@@ -1,44 +1,17 @@
 #!/usr/bin/env python3
-from MUComic import Connector, DB, UIStarter, Api
-import argparse
+from MUComic import Connector, UIStarter, Paths
 import configparser
 import os.path
 
 if __name__ == "__main__":
-	conf_parser = argparse.ArgumentParser(
-			add_help = False
-			)
-	conf_parser.add_argument("--config", "-c",
-				help="Specify config file", metavar="FILE")
-	args, remaining_argv = conf_parser.parse_known_args()
 	config = configparser.ConfigParser()
 	config.add_section("MUComicLoad")
-	cfiles = []
-
-	if os.path.isfile("/etc/mucomicload.conf"):
-		cfiles.append("/etc/mucomicload.conf")
-	if os.path.isfile(os.path.expanduser("~/.config/mucomicload.conf")):
-		cfiles.append(os.path.expanduser("~/.config/mucomicload.conf"))
-	if args.config and os.path.isfile(args.config):
-		cfiles.append(args.config)
-	config.set("MUComicLoad", "downloaddir", os.path.realpath("."))	
-	config.set("MUComicLoad", "database", os.path.expanduser("~/.mucomics.db"))	
-	config.read(cfiles)
-	
-
-	parser = argparse.ArgumentParser()
-	parser.add_argument("--database", "-db")
-	parser.add_argument("--config", "-c")
-
-	args = parser.parse_args(remaining_argv)
-
-	print(config['MUComicLoad']['database'])
-	db = DB(config['MUComicLoad']['database'])
-
-	api = Api("","")
-
-	conn = Connector(db, api)
-
+	config.set("MUComicLoad", "downloaddir", os.path.expanduser("~/Comics"))	
+	config.set("MUComicLoad", "username", "username")
+	config.set("MUComicLoad", "password", "password")	
+	config.set("MUComicLoad", "comicviewer", "")	
+	config.read(Paths.configfile)
+	conn = Connector(config)
 	app = UIStarter(conn)
 	app.start()
 

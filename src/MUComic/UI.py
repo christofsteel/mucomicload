@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'res/mainWindow.ui'
 #
-# Created: Tue Feb 11 17:33:42 2014
+# Created: Wed Feb 12 02:55:55 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -46,6 +46,7 @@ class Ui_MainWindow(object):
 		MainWindow.setCentralWidget(self.horizontalSplit)
 		self.menubar = QtGui.QMenuBar(MainWindow)
 		self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
+		self.menubar.setDefaultUp(False)
 		self.menubar.setObjectName("menubar")
 		self.menuFile = QtGui.QMenu(self.menubar)
 		self.menuFile.setObjectName("menuFile")
@@ -53,9 +54,15 @@ class Ui_MainWindow(object):
 		self.menuHelp.setObjectName("menuHelp")
 		MainWindow.setMenuBar(self.menubar)
 		self.toolBar = QtGui.QToolBar(MainWindow)
+		self.toolBar.setMovable(False)
 		self.toolBar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+		self.toolBar.setFloatable(False)
 		self.toolBar.setObjectName("toolBar")
 		MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
+		self.statusBar = QtGui.QStatusBar(MainWindow)
+		self.statusBar.setSizeGripEnabled(False)
+		self.statusBar.setObjectName("statusBar")
+		MainWindow.setStatusBar(self.statusBar)
 		self.menuFileSettings = QtGui.QAction(MainWindow)
 		icon = QtGui.QIcon()
 		icon.addPixmap(QtGui.QPixmap(":/res/settings.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -110,14 +117,14 @@ class Ui_MainWindow(object):
 
 	def retranslateUi(self, MainWindow):
 		MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MUComicLoad", None, QtGui.QApplication.UnicodeUTF8))
-		self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
+		self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "&File", None, QtGui.QApplication.UnicodeUTF8))
 		self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "&Help", None, QtGui.QApplication.UnicodeUTF8))
 		self.toolBar.setWindowTitle(QtGui.QApplication.translate("MainWindow", "toolBar", None, QtGui.QApplication.UnicodeUTF8))
 		self.menuFileSettings.setText(QtGui.QApplication.translate("MainWindow", "&Settings", None, QtGui.QApplication.UnicodeUTF8))
 		self.menuFileQuit.setText(QtGui.QApplication.translate("MainWindow", "&Quit", None, QtGui.QApplication.UnicodeUTF8))
 		self.actionAdd_series.setText(QtGui.QApplication.translate("MainWindow", "&Add series", None, QtGui.QApplication.UnicodeUTF8))
 		self.actionUpdate.setText(QtGui.QApplication.translate("MainWindow", "&Update", None, QtGui.QApplication.UnicodeUTF8))
-		self.actionAbout_MUComicLoad.setText(QtGui.QApplication.translate("MainWindow", "About MUComicLoad", None, QtGui.QApplication.UnicodeUTF8))
+		self.actionAbout_MUComicLoad.setText(QtGui.QApplication.translate("MainWindow", "&About MUComicLoad", None, QtGui.QApplication.UnicodeUTF8))
 		self.actionHelp.setText(QtGui.QApplication.translate("MainWindow", "&Help", None, QtGui.QApplication.UnicodeUTF8))
 		self.actionDownload.setText(QtGui.QApplication.translate("MainWindow", "Download", None, QtGui.QApplication.UnicodeUTF8))
 

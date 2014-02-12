@@ -20,7 +20,6 @@ class Api:
 		self.opener = build_opener(HTTPCookieProcessor(self.cookiejar))
 		self._connected = False
 
-	#Needed
 	def connect(self):
 		print('logging in with username %s' % self.username)
 		self.firstpass = self.opener.open(self.login_url)

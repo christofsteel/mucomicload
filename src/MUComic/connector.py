@@ -1,12 +1,14 @@
 from MUComic.models import Issue, Series
+from MUComic import Database, Api, Paths
 import os.path
 from urllib.request import urlopen
 import zipfile
 
 class Connector:
-	def __init__(self, db, api):
-		self.db = db
-		self.api = api
+	def __init__(self, config):
+		self.config = config
+		self.db = Database.DB(Paths.dbfile)
+		self.api = Api(self.config['MUComicLoad']['username'], self.config['MUComicLoad']['password'])
 
 	def updateSeries(self):
 		jsonseries = self.api.get_all_series()
@@ -72,3 +74,7 @@ class Connector:
 			return firstIssue.cover()
 		else:
 			return None
+
+	def setComicViewer(self, cv):
+		self.config.set("MUComicLoad", "comicviewer", cv)
+

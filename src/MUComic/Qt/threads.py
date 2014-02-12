@@ -9,27 +9,36 @@ class downloadFinished(QtCore.QObject):
 class SignalOnAppend(QtCore.QObject):
 	sig = QtCore.Signal()
 
-class UpdateFavedSeriesThread(QtCore.QThread):
+class UpdateThread(QtCore.QThread):
+	statusChanged = QtCore.Signal(str)
 	def __init__(self, model, parent=None):
 		QtCore.QThread.__init__(self, parent)
 		self.model = model
 		self.conn = model.conn
 
 	def run(self):
+		self.statusChanged.emit('Downloading new series')
+		self.conn.updateSeries()
+		self.statusChanged.emit('Downloading new issue data')
 		series = self.conn.get_faved_series()
 		for s in series:
 			self.conn.updateIssues(s)
 			i = self.model.indexFor(s)
 			self.model.setData(i, s)
+		self.statusChanged.emit('Done')
 
 class DownloadThread(QtCore.QThread):
+	statusChanged = QtCore.Signal(str)
 	def __init__(self, issue, conn,parent=None):
 		QtCore.QThread.__init__(self, parent)
 		self.issue = issue
 		self.conn = conn
 
 	def run(self):
+		self.statusChanged.emit('Downloading %s #%s' % (self.issue.title,
+			self.issue.safe_nr))
 		self.conn.downloadIssue(self.issue)
+		self.statusChanged.emit('Done')
 
 class PopulateThread(QtCore.QThread):
 	def __init__(self, model, series, conn, parent=None):
@@ -54,8 +63,6 @@ class PopulateThread(QtCore.QThread):
 			for issue in self.conn.getIssues(self.series):
 				if not self._abort:
 					if not issue.hasCover():
-						print("Downloading Cover for %s #%s" % (issue.title,
-							issue.issue_number))
 						issue.getCover()
 						i = self.model.indexFor(issue)
 						self.model.setData(i, issue)
