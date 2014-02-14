@@ -114,15 +114,15 @@ class UIStarter():
 	def start(self):
 		self.seriesmodel = SeriesModel(self.conn.get_faved_series(), self.conn, self.ui.listComics)
 
+		self.ui.listComics.setModel(self.seriesmodel)
+		self.ui.listComics.clicked.connect(self.updateIssuesModel)
+
 		self.issuemodel = IssueModel(self.ui.listIssues)
 		if self.seriesmodel.rowCount(None) > 0:
 			firstIndex = self.seriesmodel.index(0,0)
 			firstseries = (self.seriesmodel.data(firstIndex,QtCore.Qt.UserRole))
 			self.populateIssueModel(firstseries)
 
-		self.ui.listComics.setModel(self.seriesmodel)
-		self.ui.listComics.clicked.connect(self.updateIssuesModel)
-		self.ui.listIssues.setModel(self.issuemodel)
 
 		self.ui.actionUpdate.triggered.connect(self.updateSeries)
 		self.ui.actionAdd_series.triggered.connect(self.addSeries)

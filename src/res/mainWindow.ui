@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>555</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -99,7 +99,6 @@
      <string>&amp;File</string>
     </property>
     <addaction name="actionUpdate"/>
-    <addaction name="actionAdd_series"/>
     <addaction name="separator"/>
     <addaction name="menuFileSettings"/>
     <addaction name="separator"/>
@@ -112,7 +111,36 @@
     <addaction name="separator"/>
     <addaction name="actionAbout_MUComicLoad"/>
    </widget>
+   <widget class="QMenu" name="menuAction">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="actionList_View"/>
+    <addaction name="actionFolder_View"/>
+    <addaction name="separator"/>
+    <addaction name="actionSeries_have_Cover"/>
+   </widget>
+   <widget class="QMenu" name="menuSeries">
+    <property name="title">
+     <string>Series</string>
+    </property>
+    <addaction name="actionAdd_series"/>
+    <addaction name="actionDownload_Series"/>
+    <addaction name="actionFav_series"/>
+   </widget>
+   <widget class="QMenu" name="menuIssue">
+    <property name="title">
+     <string>Issue</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="separator"/>
+    <addaction name="actionDownload"/>
+    <addaction name="actionDownload_Issue_As"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuAction"/>
+   <addaction name="menuSeries"/>
+   <addaction name="menuIssue"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
@@ -136,7 +164,9 @@
    </attribute>
    <addaction name="actionUpdate"/>
    <addaction name="actionAdd_series"/>
+   <addaction name="actionFav_series"/>
    <addaction name="actionDownload"/>
+   <addaction name="actionOpen"/>
    <addaction name="menuFileSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
@@ -147,7 +177,7 @@
   <action name="menuFileSettings">
    <property name="icon">
     <iconset theme="preferences-system" resource="mucomicload.qrc">
-     <normaloff>:/res/settings.png</normaloff>:/res/settings.png</iconset>
+     <normaloff>:/res/tango/preferences-system.png</normaloff>:/res/tango/preferences-system.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Settings</string>
@@ -156,7 +186,7 @@
   <action name="menuFileQuit">
    <property name="icon">
     <iconset theme="application-exit" resource="mucomicload.qrc">
-     <normaloff>:/res/exit.png</normaloff>:/res/exit.png</iconset>
+     <normaloff>:/res/tango/system-log-out.png</normaloff>:/res/tango/system-log-out.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Quit</string>
@@ -165,7 +195,7 @@
   <action name="actionAdd_series">
    <property name="icon">
     <iconset theme="list-add" resource="mucomicload.qrc">
-     <normaloff>:/res/addseries.png</normaloff>:/res/addseries.png</iconset>
+     <normaloff>:/res/tango/list-add.png</normaloff>:/res/tango/list-add.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Add series</string>
@@ -174,7 +204,7 @@
   <action name="actionUpdate">
    <property name="icon">
     <iconset theme="view-refresh" resource="mucomicload.qrc">
-     <normaloff>:/res/update.png</normaloff>:/res/update.png</iconset>
+     <normaloff>:/res/tango/view-refresh.png</normaloff>:/res/tango/view-refresh.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Update</string>
@@ -188,10 +218,67 @@
   <action name="actionDownload">
    <property name="icon">
     <iconset theme="go-bottom" resource="mucomicload.qrc">
-     <normaloff>:/res/download.png</normaloff>:/res/download.png</iconset>
+     <normaloff>:/res/tango/go-bottom.png</normaloff>:/res/tango/go-bottom.png</iconset>
    </property>
    <property name="text">
-    <string>Download</string>
+    <string>Download Issue</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset theme="edit-find" resource="mucomicload.qrc">
+     <normaloff>:/res/tango/edit-find.png</normaloff>:/res/tango/edit-find.png</iconset>
+   </property>
+   <property name="text">
+    <string>Read Issue</string>
+   </property>
+  </action>
+  <action name="actionList_View">
+   <property name="text">
+    <string>&amp;List View</string>
+   </property>
+  </action>
+  <action name="actionFolder_View">
+   <property name="text">
+    <string>&amp;Folder View</string>
+   </property>
+  </action>
+  <action name="actionFav_series">
+   <property name="icon">
+    <iconset theme="emblem-favorite" resource="mucomicload.qrc">
+     <normaloff>:/res/tango/emblem-favorite.png</normaloff>:/res/tango/emblem-favorite.png</iconset>
+   </property>
+   <property name="text">
+    <string>Fav series</string>
+   </property>
+   <property name="toolTip">
+    <string>Fav series</string>
+   </property>
+  </action>
+  <action name="actionDownload_Series">
+   <property name="icon">
+    <iconset theme="go-bottom" resource="mucomicload.qrc">
+     <normaloff>:/res/tango/go-bottom.png</normaloff>:/res/tango/go-bottom.png</iconset>
+   </property>
+   <property name="text">
+    <string>Download Series</string>
+   </property>
+  </action>
+  <action name="actionSeries_have_Cover">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Series have Cover</string>
+   </property>
+  </action>
+  <action name="actionDownload_Issue_As">
+   <property name="icon">
+    <iconset theme="go-bottom" resource="mucomicload.qrc">
+     <normaloff>:/res/tango/go-bottom.png</normaloff>:/res/tango/go-bottom.png</iconset>
+   </property>
+   <property name="text">
+    <string>Download Issue As ...</string>
    </property>
   </action>
  </widget>
