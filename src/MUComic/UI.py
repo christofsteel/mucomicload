@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'res/mainWindow.ui'
 #
-# Created: Fri Feb 14 04:56:27 2014
+# Created: Sat Feb 15 15:21:42 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -106,10 +106,13 @@ class Ui_MainWindow(object):
 		self.actionOpen.setIcon(icon5)
 		self.actionOpen.setObjectName("actionOpen")
 		self.actionList_View = QtGui.QAction(MainWindow)
+		self.actionList_View.setCheckable(True)
 		self.actionList_View.setObjectName("actionList_View")
 		self.actionFolder_View = QtGui.QAction(MainWindow)
+		self.actionFolder_View.setCheckable(True)
 		self.actionFolder_View.setObjectName("actionFolder_View")
 		self.actionFav_series = QtGui.QAction(MainWindow)
+		self.actionFav_series.setCheckable(True)
 		icon6 = QtGui.QIcon()
 		icon6.addPixmap(QtGui.QPixmap(":/res/tango/emblem-favorite.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.actionFav_series.setIcon(icon6)

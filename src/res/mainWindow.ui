@@ -42,6 +42,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::InternalMove</enum>
+       </property>
        <property name="alternatingRowColors">
         <bool>true</bool>
        </property>
@@ -234,16 +237,28 @@
    </property>
   </action>
   <action name="actionList_View">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>&amp;List View</string>
    </property>
   </action>
   <action name="actionFolder_View">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>&amp;Folder View</string>
    </property>
   </action>
   <action name="actionFav_series">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset theme="emblem-favorite" resource="mucomicload.qrc">
      <normaloff>:/res/tango/emblem-favorite.png</normaloff>:/res/tango/emblem-favorite.png</iconset>

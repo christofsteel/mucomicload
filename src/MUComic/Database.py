@@ -4,7 +4,7 @@ from MUComic.models import Issue, Series
 """
 	Layout:
 		Table Series:
-			id | title | fav
+			id | title | start | end | added | fav
 		Table Issue:
 			id | series_id | issue_number | cover_url 
 """
@@ -13,7 +13,7 @@ class DB:
 		self.db_path = db_path
 		conn = sqlite3.connect(db_path)
 		c = conn.cursor()
-		c.execute("CREATE TABLE IF NOT EXISTS series(id integer primary key, title unique, fav integer);")
+		c.execute("CREATE TABLE IF NOT EXISTS series(id integer primary key, title string, start integer, end integer, added integer, fav integer);")
 		c.execute("CREATE TABLE IF NOT EXISTS issues(id integer primary key, series_id integer, issue_number string, cover_url string);")
 		c.close()
 		conn.commit()
@@ -22,12 +22,25 @@ class DB:
 	def add_series(self, series):
 		conn = sqlite3.connect(self.db_path)
 		c = conn.cursor()
-		c.execute("INSERT OR IGNORE INTO series (id, title, fav) values (?,?,?)", (series.id, series.title, series.fav))
+		for s in series:
+			c.execute("INSERT OR IGNORE INTO series (id, title, start, end, added, fav) values (?,?,?,?,?,?)", 
+				(s.id, s.title, s.start, s.end, s.added, s.fav))
+		c.close()
+		conn.commit()
+		conn.close()
+
+	def add_issues(self, issues):
+		conn = sqlite3.connect(self.db_path)
+		c = conn.cursor()
+		for issue in issues:
+			c.execute("INSERT OR IGNORE INTO issues (id,series_id,issue_number,cover_url) values (?,?,?,?)", (issue.id, issue.series_id,
+				issue.issue_number,issue.cover_url))
 		c.close()
 		conn.commit()
 		conn.close()
 
 	def add_issue(self, issue):
+		print("This is depricated (add_issue)")
 		conn = sqlite3.connect(self.db_path)
 		c = conn.cursor()
 		c.execute("INSERT OR IGNORE INTO issues (id,series_id,issue_number,cover_url) values (?,?,?,?)", (issue.id, issue.series_id,
@@ -36,30 +49,11 @@ class DB:
 		conn.commit()
 		conn.close()
 	
-	def set_issue_cover(self, issue, image):
-		print("This Function is Deprecated")
-
-	def update(self, api, v = 0):
-		conn = sqlite3.connect(self.db_path)
-		series = api.get_all_series()
-		c = conn.cursor()
-		for s in series:
-			if v == 1:
-				print(s[1])
-			c.execute("INSERT OR IGNORE INTO series (id, title, fac) values (?,?,?);", (str(s[0], s[1], 0)))
-			issues = api.get_series_by_id(s[0])
-			for issue in issues:
-				if v and v >= 2:
-					print ("%s #%s" % (s[1], issue['issue_number']))
-		c.close()
-		conn.commit()
-		conn.close()
-
 	def search_series(self, term):
 		conn = sqlite3.connect(self.db_path)
 		c = conn.cursor()
 		termperc = "%" + term + "%"
-		result = c.execute('select id, title, fav from series where title LIKE ?', (termperc,))
+		result = c.execute('select * from series where title LIKE ?', (termperc,))
 		series = []
 		for row in result:
 			series.append(Series(*row))
@@ -67,6 +61,7 @@ class DB:
 		return series
 
 	def search(self, term):
+		print("This function is depricated")
 		conn = sqlite3.connect(self.db_path)
 		c = conn.cursor()
 		termperc = "%" + term + "%"
@@ -108,7 +103,15 @@ class DB:
 		conn.close()
 		return Issue(*result)
 
-	def set_series_fav(self, id, fav):
+	def set_series_added(self, id, added):
+		conn = sqlite3.connect(self.db_path)
+		c = conn.cursor()
+		c.execute('update series set added=? where id = ?', (added, id))
+		c.close()
+		conn.commit()
+		conn.close()
+
+	def set_series_faved(self, id, fav):
 		conn = sqlite3.connect(self.db_path)
 		c = conn.cursor()
 		c.execute('update series set fav=? where id = ?', (fav, id))
@@ -125,10 +128,23 @@ class DB:
 		conn.close()
 		return series
 
-	def get_series_list(self):
+	def get_added_series(self):
 		conn = sqlite3.connect(self.db_path)
 		c = conn.cursor()
-		result = c.execute('select * from series')
+		result = c.execute('select * from series where added = 1')
+		series = [Series(*row) for row in result]
+		c.close()
+		conn.close()
+		return series
+
+	def get_series_list(self, sortby=None):
+		conn = sqlite3.connect(self.db_path)
+		c = conn.cursor()
+		if sortby:
+			print("Order in the court")
+			result = c.execute('select * from series order by ?', (sortby,))
+		else:
+			result = c.execute('select * from series')
 		series = [Series(*row) for row in result]
 		c.close()
 		conn.close()

@@ -6,10 +6,14 @@ import os.path
 if __name__ == "__main__":
 	config = configparser.ConfigParser()
 	config.add_section("MUComicLoad")
+	config.add_section("UI")
 	config.set("MUComicLoad", "downloaddir", os.path.expanduser("~/Comics"))	
 	config.set("MUComicLoad", "username", "username")
 	config.set("MUComicLoad", "password", "password")	
 	config.set("MUComicLoad", "comicviewer", "")	
+	config.set("UI", "FolderView", "True")	
+	config.set("UI", "SeriesCover", "True")	
+
 	config.read(Paths.configfile)
 	conn = Connector(config)
 	app = UIStarter(conn)

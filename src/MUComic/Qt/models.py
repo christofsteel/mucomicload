@@ -28,7 +28,11 @@ class SeriesModel(QtCore.QAbstractListModel):
 
 	def data(self, index, role):
 		if role == QtCore.Qt.DisplayRole:
-			return self._series[index.row()].title
+			return "(%s) %s" % (self._series[index.row()].start,self._series[index.row()].title)
+		elif role == QtCore.Qt.FontRole:
+			if self._series[index.row()].fav:
+				return QtGui.QFont('Sans Serif', 10, QtGui.QFont.Bold)
+			return None
 		elif role == QtCore.Qt.DecorationRole:
 			img = self.conn.getFirstCover(self._series[index.row()])
 			if img:
@@ -44,8 +48,9 @@ class SeriesModel(QtCore.QAbstractListModel):
 			return None
 
 class IssueModel(QtCore.QAbstractListModel):
-	def __init__(self, parent=None):
+	def __init__(self, conn, parent=None):
 		QtCore.QAbstractListModel.__init__(self, parent)
+		self.conn = conn
 		self._issues = []
 
 	def append(self, issue):
@@ -79,8 +84,10 @@ class IssueModel(QtCore.QAbstractListModel):
 			else:
 				img = open('res/missing.png', 'rb').read()
 				qimg = QtGui.QImage.fromData(img, 'png')
-			if issue.local():
+			if self.conn.issueHasLocal(issue):
 				okpix = QtGui.QPixmap('res/ok.png')
+			elif issue.downloading or self.conn.issueHasTemp(issue):
+				okpix = QtGui.QPixmap('res/tango/go-bottom.png')
 			else:
 				okpix = QtGui.QPixmap('res/notok.png')
 			qpix = QtGui.QPixmap.fromImage(qimg)
@@ -95,3 +102,26 @@ class IssueModel(QtCore.QAbstractListModel):
 		else:
 			return None
 
+class SeriesSearchResultModel(QtCore.QAbstractItemModel):
+	def __init__(self, series, conn, parent=None):
+		QtCore.QAbstractItemModel.__init__(self, parent)
+		self._series = series
+		self.conn = conn
+		
+	def rowCount(self, role):
+		return len(self._series)
+
+	def columnCount(self, role):
+		return 3
+
+	def headerData(self, sec, orient, role):
+		print("I have been called %s" % sec)
+		return(str(sec))
+
+	def data(self, index, role):
+		if not index.isValid():
+			return None
+		if role == QtCore.Qt.DisplayRole:
+			return "Foobar"
+		else:
+			return None
