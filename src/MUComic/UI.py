@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'res/mainWindow.ui'
 #
-# Created: Sat Feb 15 15:21:42 2014
+# Created: Mon Feb 17 22:08:22 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -95,11 +95,11 @@ class Ui_MainWindow(object):
 		self.actionUpdate.setObjectName("actionUpdate")
 		self.actionAbout_MUComicLoad = QtGui.QAction(MainWindow)
 		self.actionAbout_MUComicLoad.setObjectName("actionAbout_MUComicLoad")
-		self.actionDownload = QtGui.QAction(MainWindow)
+		self.actionDownload_Issue = QtGui.QAction(MainWindow)
 		icon4 = QtGui.QIcon()
 		icon4.addPixmap(QtGui.QPixmap(":/res/tango/go-bottom.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		self.actionDownload.setIcon(icon4)
-		self.actionDownload.setObjectName("actionDownload")
+		self.actionDownload_Issue.setIcon(icon4)
+		self.actionDownload_Issue.setObjectName("actionDownload_Issue")
 		self.actionOpen = QtGui.QAction(MainWindow)
 		icon5 = QtGui.QIcon()
 		icon5.addPixmap(QtGui.QPixmap(":/res/tango/edit-find.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -113,6 +113,7 @@ class Ui_MainWindow(object):
 		self.actionFolder_View.setObjectName("actionFolder_View")
 		self.actionFav_series = QtGui.QAction(MainWindow)
 		self.actionFav_series.setCheckable(True)
+		self.actionFav_series.setChecked(False)
 		icon6 = QtGui.QIcon()
 		icon6.addPixmap(QtGui.QPixmap(":/res/tango/emblem-favorite.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.actionFav_series.setIcon(icon6)
@@ -126,6 +127,14 @@ class Ui_MainWindow(object):
 		self.actionDownload_Issue_As = QtGui.QAction(MainWindow)
 		self.actionDownload_Issue_As.setIcon(icon4)
 		self.actionDownload_Issue_As.setObjectName("actionDownload_Issue_As")
+		self.actionRemove_series = QtGui.QAction(MainWindow)
+		icon7 = QtGui.QIcon()
+		icon7.addPixmap(QtGui.QPixmap(":/res/tango/list-remove.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		self.actionRemove_series.setIcon(icon7)
+		self.actionRemove_series.setObjectName("actionRemove_series")
+		self.actionDownload = QtGui.QAction(MainWindow)
+		self.actionDownload.setIcon(icon4)
+		self.actionDownload.setObjectName("actionDownload")
 		self.menuFile.addAction(self.actionUpdate)
 		self.menuFile.addSeparator()
 		self.menuFile.addAction(self.menuFileSettings)
@@ -138,11 +147,12 @@ class Ui_MainWindow(object):
 		self.menuAction.addSeparator()
 		self.menuAction.addAction(self.actionSeries_have_Cover)
 		self.menuSeries.addAction(self.actionAdd_series)
+		self.menuSeries.addAction(self.actionRemove_series)
 		self.menuSeries.addAction(self.actionDownload_Series)
 		self.menuSeries.addAction(self.actionFav_series)
 		self.menuIssue.addAction(self.actionOpen)
 		self.menuIssue.addSeparator()
-		self.menuIssue.addAction(self.actionDownload)
+		self.menuIssue.addAction(self.actionDownload_Issue)
 		self.menuIssue.addAction(self.actionDownload_Issue_As)
 		self.menubar.addAction(self.menuFile.menuAction())
 		self.menubar.addAction(self.menuAction.menuAction())
@@ -172,7 +182,7 @@ class Ui_MainWindow(object):
 		self.actionAdd_series.setText(QtGui.QApplication.translate("MainWindow", "&Add series", None, QtGui.QApplication.UnicodeUTF8))
 		self.actionUpdate.setText(QtGui.QApplication.translate("MainWindow", "&Update", None, QtGui.QApplication.UnicodeUTF8))
 		self.actionAbout_MUComicLoad.setText(QtGui.QApplication.translate("MainWindow", "&About MUComicLoad", None, QtGui.QApplication.UnicodeUTF8))
-		self.actionDownload.setText(QtGui.QApplication.translate("MainWindow", "Download Issue", None, QtGui.QApplication.UnicodeUTF8))
+		self.actionDownload_Issue.setText(QtGui.QApplication.translate("MainWindow", "Download Issue", None, QtGui.QApplication.UnicodeUTF8))
 		self.actionOpen.setText(QtGui.QApplication.translate("MainWindow", "Read Issue", None, QtGui.QApplication.UnicodeUTF8))
 		self.actionList_View.setText(QtGui.QApplication.translate("MainWindow", "&List View", None, QtGui.QApplication.UnicodeUTF8))
 		self.actionFolder_View.setText(QtGui.QApplication.translate("MainWindow", "&Folder View", None, QtGui.QApplication.UnicodeUTF8))
@@ -181,5 +191,7 @@ class Ui_MainWindow(object):
 		self.actionDownload_Series.setText(QtGui.QApplication.translate("MainWindow", "Download Series", None, QtGui.QApplication.UnicodeUTF8))
 		self.actionSeries_have_Cover.setText(QtGui.QApplication.translate("MainWindow", "Series have Cover", None, QtGui.QApplication.UnicodeUTF8))
 		self.actionDownload_Issue_As.setText(QtGui.QApplication.translate("MainWindow", "Download Issue As ...", None, QtGui.QApplication.UnicodeUTF8))
+		self.actionRemove_series.setText(QtGui.QApplication.translate("MainWindow", "Remove series", None, QtGui.QApplication.UnicodeUTF8))
+		self.actionDownload.setText(QtGui.QApplication.translate("MainWindow", "Download", None, QtGui.QApplication.UnicodeUTF8))
 
 import MUComic.mucomicload_rc

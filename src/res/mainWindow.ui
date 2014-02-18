@@ -42,9 +42,6 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="dragDropMode">
-        <enum>QAbstractItemView::InternalMove</enum>
-       </property>
        <property name="alternatingRowColors">
         <bool>true</bool>
        </property>
@@ -128,6 +125,7 @@
      <string>Series</string>
     </property>
     <addaction name="actionAdd_series"/>
+    <addaction name="actionRemove_series"/>
     <addaction name="actionDownload_Series"/>
     <addaction name="actionFav_series"/>
    </widget>
@@ -137,7 +135,7 @@
     </property>
     <addaction name="actionOpen"/>
     <addaction name="separator"/>
-    <addaction name="actionDownload"/>
+    <addaction name="actionDownload_Issue"/>
     <addaction name="actionDownload_Issue_As"/>
    </widget>
    <addaction name="menuFile"/>
@@ -218,7 +216,7 @@
     <string>&amp;About MUComicLoad</string>
    </property>
   </action>
-  <action name="actionDownload">
+  <action name="actionDownload_Issue">
    <property name="icon">
     <iconset theme="go-bottom" resource="mucomicload.qrc">
      <normaloff>:/res/tango/go-bottom.png</normaloff>:/res/tango/go-bottom.png</iconset>
@@ -294,6 +292,24 @@
    </property>
    <property name="text">
     <string>Download Issue As ...</string>
+   </property>
+  </action>
+  <action name="actionRemove_series">
+   <property name="icon">
+    <iconset resource="mucomicload.qrc">
+     <normaloff>:/res/tango/list-remove.png</normaloff>:/res/tango/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Remove series</string>
+   </property>
+  </action>
+  <action name="actionDownload">
+   <property name="icon">
+    <iconset resource="mucomicload.qrc">
+     <normaloff>:/res/tango/go-bottom.png</normaloff>:/res/tango/go-bottom.png</iconset>
+   </property>
+   <property name="text">
+    <string>Download</string>
    </property>
   </action>
  </widget>

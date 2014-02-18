@@ -61,6 +61,10 @@ class IssueModel(QtCore.QAbstractListModel):
 		self.endInsertRows()
 		self.dataChanged.emit(index, index)
 
+	def setChanged(self, index):
+		if index.isValid() and 0 <= index.row() < len(self._issues):
+			self.dataChanged.emit(index, index)
+
 	def setData(self, index, value, role=QtCore.Qt.UserRole):
 		if role != QtCore.Qt.UserRole:
 			return False
@@ -69,7 +73,10 @@ class IssueModel(QtCore.QAbstractListModel):
 			self.dataChanged.emit(index, index)
 
 	def indexFor(self, obj):
-		return self.index(self._issues.index(obj),0)
+		if obj in self._issues:
+			return self.index(self._issues.index(obj),0)
+		else:
+			return None
 
 	def rowCount(self, role):
 		return len(self._issues)

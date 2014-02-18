@@ -27,23 +27,57 @@ class UIStarter():
 			self.updateThread.finished.connect(lambda:self.ui.actionUpdate.setDisabled(False))
 			self.updateThread.terminated.connect(lambda:self.ui.actionUpdate.setDisabled(False))
 			self.updateThread.statusChanged.connect(self.notify)
+			self.updateThread.finished.connect(self.downloadFavedSeries)
 			self.updateThread.start()
+
+	def downloadFavedSeries(self):
+		series = self.conn.db.get_faved_series()
+		for s in series:
+			self.downloadSeries(s)
+
+	def removeSeries(self):
+		seriesindex = self.ui.listComics.currentIndex()
+		series = self.seriesmodel.data(seriesindex, QtCore.Qt.UserRole)
+		self.conn.db.set_series_added(series.id, 0)
+		self.conn.db.set_series_faved(series.id, 0)
+		series.fav = False
+		series.added = False
+		self.updateSeriesModel()
+		seriesindex = self.ui.listComics.currentIndex()
+		series = self.seriesmodel.data(seriesindex, QtCore.Qt.UserRole)
+		self.ui.actionFav_series.setChecked(series.fav)
+		self.populateIssueModel(series)
+
+	def downloadSeriesWrapper(self):
+		seriesindex = self.ui.listComics.currentIndex()
+		series = self.seriesmodel.data(seriesindex, QtCore.Qt.UserRole)
+		self.downloadSeries(series)
+
+	def downloadSeries(self, series):
+		issues = [issue for issue in self.conn.getIssues(series) if not
+				self.conn.issueHasLocal(issue) and not
+				self.conn.issueHasTemp(issue)]
+		self.downloadIssues(issues)
+
+	def issueViewUpdate(self, issue):
+		index = self.issueModel.indexFor(issue)
+		if index:
+			self.issueModel.setChanged(index)
 
 	def downloadIssue(self):
 		issueindex = self.ui.listIssues.currentIndex()
+		if issueindex.row() == -1:
+			return None
 		issue = self.ui.listIssues.model().data(issueindex,QtCore.Qt.UserRole)
-		#issue.downloading = True
-		#self.issueModel.setData(issueindex, issue)
+		self.downloadIssues([issue])
+
+	def downloadIssues(self, issues):
 		if hasattr(self,'downloadThread') and self.downloadThread.isRunning():
-			self.downloadThread.append([issue])
+			self.downloadThread.append(issues)
 		else:
-			self.downloadThread = DownloadThread([issue],self.conn,self.mw)
-			#self.downloadThread.started.connect(lambda:self.ui.actionDownload.setDisabled(True))
+			self.downloadThread = DownloadThread(issues,self.conn,self.mw)
+			self.downloadThread.iconChange.connect(self.issueViewUpdate)
 			self.downloadThread.statusChanged.connect(self.notify)
-			#self.downloadThread.finished.connect(lambda:self.ui.actionDownload.setDisabled(False))
-			#self.downloadThread.terminated.connect(lambda:self.ui.actionDownload.setDisabled(False))
-			self.downloadThread.done.connect(lambda:
-					self.ui.listIssues.update(issueindex))
 			self.downloadThread.start()
 
 	def favSeries(self, fav):
@@ -85,10 +119,24 @@ class UIStarter():
 		self.populateThread = PopulateThread(self.issueModel, series, self.conn)
 		self.populateThread.start()
 		
-	def updateIssuesModel(self, item):
-		series = item.data(QtCore.Qt.UserRole)
+	def updateIssuesModel(self, selected, deselected):
+		selection = selected.indexes()[0]
+		series = self.seriesmodel.data(selection, QtCore.Qt.UserRole)
 		self.ui.actionFav_series.setChecked(series.fav)
 		self.populateIssueModel(series)
+	
+	def switchIssueSeries(self, issueSeries):
+		self.issueSeries = issueSeries 
+		if issueSeries:
+			self.ui.actionDownload.setText("Download Issue")
+		else:
+			self.ui.actionDownload.setText("Download Series")
+
+	def download(self):
+		if self.issueSeries:
+			self.downloadIssue()
+		else:
+			self.downloadSeriesWrapper()
 
 	def updateConfig(self):
 		self.conn.config.set("MUComicLoad","username",
@@ -139,15 +187,13 @@ class UIStarter():
 				self.conn, self.searchWindow.resultView)
 		self.searchWindow.resultView.setModel(self.searchmodel)
 
-	def sigInt_handler(self, signal, frame):
-		print("CTRL-C")
-
 	def __init__(self, conn):
 		self.conn = conn
 		self.app = QtGui.QApplication(sys.argv)
 		self.mw = QtGui.QMainWindow()
 		self.ui = UI.Ui_MainWindow()
 		self.ui.setupUi(self.mw)
+		self.issueSeries = False
 
 		self.ui.actionFolder_View.setCheckable(True)
 		self.ui.actionList_View.setCheckable(True)
@@ -161,7 +207,13 @@ class UIStarter():
 			self.setListView(True)
 
 		self.ui.listIssues.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-		self.ui.listIssues.addAction(self.ui.actionDownload)
+		self.ui.listIssues.addAction(self.ui.actionDownload_Issue)
+		self.ui.listIssues.addAction(self.ui.actionOpen)
+
+		self.ui.listComics.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+		self.ui.listComics.addAction(self.ui.actionFav_series)
+		self.ui.listComics.addAction(self.ui.actionDownload_Series)
+		self.ui.listComics.addAction(self.ui.actionRemove_series)
 
 		self.settingswindow = settingsWindow.Ui_Form()
 		self.settingswindowform = QtGui.QDialog(self.mw)
@@ -185,10 +237,17 @@ class UIStarter():
 		self.searchWindow.buttonBox.accepted.connect(self.addSeries)
 		self.searchWindow.buttonBox.rejected.connect(self.searchWindowForm.close)
 
-		self.ui.actionDownload.triggered.connect(self.downloadIssue)
+		self.ui.listComics.clicked.connect(lambda: self.switchIssueSeries(False))
+		self.ui.listIssues.clicked.connect(lambda: self.switchIssueSeries(True))
+
+		self.ui.actionDownload_Issue.triggered.connect(self.downloadIssue)
+		self.ui.actionDownload_Series.triggered.connect(self.downloadSeriesWrapper)
+		self.ui.actionDownload.triggered.connect(self.download)
+		self.ui.actionDownload.setText("Download Series")
 		self.ui.menuFileSettings.triggered.connect(self.settingswindowform.show)
 		self.ui.actionUpdate.triggered.connect(self.updateSeries)
 		self.ui.actionAdd_series.triggered.connect(self.searchWindowForm.show)
+		self.ui.actionRemove_series.triggered.connect(self.removeSeries)
 		self.ui.actionFav_series.toggled.connect(self.favSeries)
 		self.ui.actionOpen.triggered.connect(self.openIssue)
 		self.ui.actionList_View.triggered.connect(lambda: self.setListView(True))
@@ -196,17 +255,19 @@ class UIStarter():
 				self.setListView(False))
 	
 	def start(self):
+		self.mw.show()
 		self.seriesmodel = SeriesModel(self.conn.get_added_series(), self.conn, self.ui.listComics)
 
 		self.ui.listComics.setModel(self.seriesmodel)
-		self.ui.listComics.clicked.connect(self.updateIssuesModel)
+		self.selectionmodel = self.ui.listComics.selectionModel()
+		self.selectionmodel.selectionChanged.connect(self.updateIssuesModel)  
 
 		self.issueModel = IssueModel(self.conn, self.ui.listIssues)
 		if self.seriesmodel.rowCount(None) > 0:
 			firstIndex = self.seriesmodel.index(0,0)
+			self.ui.listComics.selectionModel().select(firstIndex, QtGui.QItemSelectionModel.SelectCurrent)
 			firstseries = self.seriesmodel.data(firstIndex,QtCore.Qt.UserRole)
 			self.populateIssueModel(firstseries)
 
 		signal.signal(signal.SIGINT, signal.SIG_DFL)
-		self.mw.show()
 		sys.exit(self.app.exec_())

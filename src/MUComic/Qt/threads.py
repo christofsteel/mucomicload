@@ -1,4 +1,6 @@
 from PySide import QtCore
+from MUComic import Issue
+import queue
 
 class downloading(QtCore.QObject):
 	sig = QtCore.Signal(int)
@@ -11,6 +13,7 @@ class SignalOnAppend(QtCore.QObject):
 
 class UpdateThread(QtCore.QThread):
 	statusChanged = QtCore.Signal(str)
+	finishedAdding = QtCore.Signal()
 	def __init__(self, model, parent=None):
 		QtCore.QThread.__init__(self, parent)
 		self.model = model
@@ -25,50 +28,39 @@ class UpdateThread(QtCore.QThread):
 			self.conn.updateIssues(s)
 			i = self.model.indexFor(s)
 			self.model.setData(i, s)
-		self.statusChanged.emit("Downloading issues for faved series")
-		fseries = self.conn.db.get_faved_series()
-		for s in fseries:
-			issues = self.conn.getIssues(s)
-			for issue in issues:
-				if not self.conn.issueHasLocal(issue) and not self.conn.issueHasTemp(issue):
-					self.statusChanged.emit("Downloading issues for faved series (%s #%s)" % (issue.title, issue.safe_nr))
-					self.conn.downloadIssue(issue)
-		self.statusChanged.emit('Done')
+		#self.statusChanged.emit("Downloading issues for faved series")
+		#fseries = self.conn.db.get_faved_series()
+		#for s in fseries:
+		#	issues = self.conn.getIssues(s)
+		#	for issue in issues:
+		#		if not self.conn.issueHasLocal(issue) and not self.conn.issueHasTemp(issue):
+		#			self.statusChanged.emit("Downloading issues for faved series (%s #%s)" % (issue.title, issue.safe_nr))
+		#			self.conn.downloadIssue(issue)
+		#self.statusChanged.emit('Done')
 
 class DownloadThread(QtCore.QThread):
 	statusChanged = QtCore.Signal(str)
-	done = QtCore.Signal()
+	iconChange = QtCore.Signal(Issue)
 	def __init__(self, issues, conn,parent=None):
 		QtCore.QThread.__init__(self, parent)
-		self.issues = issues
+		self.queue = queue.Queue()
+		for issue in issues:
+			self.queue.put(issue)
 		self.conn = conn
-		self.mutex = QtCore.QMutex()
-		self.addIssues = []
 
 	def append(self, issues):
-		self.mutex.lock()
-		self.addIssues += issues
-		self.mutex.unlock()
+		for issue in issues:
+			self.queue.put(issue)
 	
-	def downloadLoop(self):
-		for issue in self.issues:
+	def run(self):
+		while True:
+			issue = self.queue.get()
 			self.statusChanged.emit('Downloading %s #%s' % (issue.title,
 				issue.safe_nr))
+			self.iconChange.emit(issue)
 			self.conn.downloadIssue(issue)
+			self.iconChange.emit(issue)
 			self.statusChanged.emit('Done')
-		self.mutex.lock()
-		self.issues = self.addIssues
-		self.addIssues = []
-		self.mutex.unlock()
-		if self.issues == []:
-			self.done.emit()
-			return
-		else:
-			self.downloadLoop()
-
-
-	def run(self):
-		self.downloadLoop()
 
 class PopulateThread(QtCore.QThread):
 	def __init__(self, model, series, conn, parent=None):
@@ -98,7 +90,6 @@ class PopulateThread(QtCore.QThread):
 						self.model.setData(i, issue)
 
 class AddSeriesThread(QtCore.QThread):
-	statusChanged = QtCore.Signal()
 	def __init__(self, series_id, model, conn, parent=None):
 		QtCore.QThread.__init__(self, parent)
 		self.series_id = series_id
