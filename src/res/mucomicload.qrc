@@ -1,6 +1,7 @@
 <RCC>
   <qresource prefix="res">
     <file>tango/list-remove.png</file>
+    <file>wood.jpg</file>
     <file>tango/edit-find.png</file>
     <file>tango/emblem-favorite.png</file>
     <file>tango/go-bottom.png</file>

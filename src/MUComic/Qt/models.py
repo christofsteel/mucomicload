@@ -91,18 +91,17 @@ class IssueModel(QtCore.QAbstractListModel):
 			else:
 				img = open('res/missing.png', 'rb').read()
 				qimg = QtGui.QImage.fromData(img, 'png')
-			if self.conn.issueHasLocal(issue):
-				okpix = QtGui.QPixmap('res/ok.png')
-			elif issue.downloading or self.conn.issueHasTemp(issue):
-				okpix = QtGui.QPixmap('res/tango/go-bottom.png')
-			else:
-				okpix = QtGui.QPixmap('res/notok.png')
 			qpix = QtGui.QPixmap.fromImage(qimg)
 			qrect = qpix.rect()
-			miniokpix = okpix.scaled(64,64)
-			painter = QtGui.QPainter(qpix)
-			painter.drawPixmap(qrect.width()-64,qrect.height()-64,miniokpix)
-			painter.end()
+			if not self.conn.issueHasLocal(issue):
+				tmpicon = QtGui.QIcon(qpix)
+				qpix = tmpicon.pixmap(qrect.width(),qrect.height(),mode=QtGui.QIcon.Disabled)
+			if issue.downloading or self.conn.issueHasTemp(issue):
+				badge = QtGui.QPixmap('res/tango/go-bottom.png')
+				badgepix = badge.scaled(64,64)
+				painter = QtGui.QPainter(qpix)
+				painter.drawPixmap(qrect.width()-64,qrect.height()-64,badgepix)
+				painter.end()
 			return QtGui.QIcon(qpix)
 		elif role == QtCore.Qt.UserRole:
 			return issue

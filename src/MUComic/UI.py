@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'res/mainWindow.ui'
 #
-# Created: Mon Feb 17 22:08:22 2014
+# Created: Wed Feb 19 11:42:49 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,18 +12,18 @@ from PySide import QtCore, QtGui
 class Ui_MainWindow(object):
 	def setupUi(self, MainWindow):
 		MainWindow.setObjectName("MainWindow")
-		MainWindow.resize(800, 555)
+		MainWindow.resize(875, 743)
 		MainWindow.setUnifiedTitleAndToolBarOnMac(True)
 		self.horizontalSplit = QtGui.QWidget(MainWindow)
 		self.horizontalSplit.setObjectName("horizontalSplit")
 		self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalSplit)
 		self.horizontalLayout.setSpacing(0)
-		self.horizontalLayout.setSizeConstraint(QtGui.QLayout.SetDefaultConstraint)
 		self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
 		self.horizontalLayout.setObjectName("horizontalLayout")
 		self.splitter = QtGui.QSplitter(self.horizontalSplit)
-		self.splitter.setLineWidth(1)
+		self.splitter.setLineWidth(0)
 		self.splitter.setOrientation(QtCore.Qt.Horizontal)
+		self.splitter.setHandleWidth(1)
 		self.splitter.setObjectName("splitter")
 		self.listComics = QtGui.QListView(self.splitter)
 		sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
@@ -41,15 +41,22 @@ class Ui_MainWindow(object):
 		sizePolicy.setHeightForWidth(self.listIssues.sizePolicy().hasHeightForWidth())
 		self.listIssues.setSizePolicy(sizePolicy)
 		self.listIssues.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-		self.listIssues.setIconSize(QtCore.QSize(128, 128))
-		self.listIssues.setMovement(QtGui.QListView.Static)
+		self.listIssues.setStyleSheet("background-image: url(:/res/wood.jpg);\n"
+"item::background-color:rgb(170, 0, 0);")
+		self.listIssues.setFrameShadow(QtGui.QFrame.Sunken)
+		self.listIssues.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+		self.listIssues.setIconSize(QtCore.QSize(192, 192))
 		self.listIssues.setResizeMode(QtGui.QListView.Adjust)
+		self.listIssues.setLayoutMode(QtGui.QListView.Batched)
+		self.listIssues.setSpacing(20)
 		self.listIssues.setViewMode(QtGui.QListView.IconMode)
+		self.listIssues.setUniformItemSizes(True)
+		self.listIssues.setBatchSize(30)
 		self.listIssues.setObjectName("listIssues")
 		self.horizontalLayout.addWidget(self.splitter)
 		MainWindow.setCentralWidget(self.horizontalSplit)
 		self.menubar = QtGui.QMenuBar(MainWindow)
-		self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
+		self.menubar.setGeometry(QtCore.QRect(0, 0, 875, 21))
 		self.menubar.setDefaultUp(False)
 		self.menubar.setObjectName("menubar")
 		self.menuFile = QtGui.QMenu(self.menubar)
@@ -65,7 +72,7 @@ class Ui_MainWindow(object):
 		MainWindow.setMenuBar(self.menubar)
 		self.toolBar = QtGui.QToolBar(MainWindow)
 		self.toolBar.setMovable(False)
-		self.toolBar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+		self.toolBar.setToolButtonStyle(QtCore.Qt.ToolButtonFollowStyle)
 		self.toolBar.setFloatable(False)
 		self.toolBar.setObjectName("toolBar")
 		MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
@@ -161,10 +168,10 @@ class Ui_MainWindow(object):
 		self.menubar.addAction(self.menuHelp.menuAction())
 		self.toolBar.addAction(self.actionUpdate)
 		self.toolBar.addAction(self.actionAdd_series)
+		self.toolBar.addAction(self.actionRemove_series)
 		self.toolBar.addAction(self.actionFav_series)
 		self.toolBar.addAction(self.actionDownload)
 		self.toolBar.addAction(self.actionOpen)
-		self.toolBar.addAction(self.menuFileSettings)
 
 		self.retranslateUi(MainWindow)
 		QtCore.QMetaObject.connectSlotsByName(MainWindow)

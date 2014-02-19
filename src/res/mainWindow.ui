@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>555</height>
+    <width>875</width>
+    <height>743</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,19 +21,19 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <property name="sizeConstraint">
-     <enum>QLayout::SetDefaultConstraint</enum>
-    </property>
     <property name="margin">
      <number>0</number>
     </property>
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="lineWidth">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="handleWidth">
+       <number>1</number>
       </property>
       <widget class="QListView" name="listComics">
        <property name="sizePolicy">
@@ -62,20 +62,39 @@
        <property name="contextMenuPolicy">
         <enum>Qt::ActionsContextMenu</enum>
        </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/res/wood.jpg);
+item::background-color:rgb(170, 0, 0);</string>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::ExtendedSelection</enum>
+       </property>
        <property name="iconSize">
         <size>
-         <width>128</width>
-         <height>128</height>
+         <width>192</width>
+         <height>192</height>
         </size>
-       </property>
-       <property name="movement">
-        <enum>QListView::Static</enum>
        </property>
        <property name="resizeMode">
         <enum>QListView::Adjust</enum>
        </property>
+       <property name="layoutMode">
+        <enum>QListView::Batched</enum>
+       </property>
+       <property name="spacing">
+        <number>20</number>
+       </property>
        <property name="viewMode">
         <enum>QListView::IconMode</enum>
+       </property>
+       <property name="uniformItemSizes">
+        <bool>true</bool>
+       </property>
+       <property name="batchSize">
+        <number>30</number>
        </property>
       </widget>
      </widget>
@@ -87,7 +106,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>875</width>
      <height>21</height>
     </rect>
    </property>
@@ -152,7 +171,7 @@
     <bool>false</bool>
    </property>
    <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonTextUnderIcon</enum>
+    <enum>Qt::ToolButtonFollowStyle</enum>
    </property>
    <property name="floatable">
     <bool>false</bool>
@@ -165,10 +184,10 @@
    </attribute>
    <addaction name="actionUpdate"/>
    <addaction name="actionAdd_series"/>
+   <addaction name="actionRemove_series"/>
    <addaction name="actionFav_series"/>
    <addaction name="actionDownload"/>
    <addaction name="actionOpen"/>
-   <addaction name="menuFileSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="sizeGripEnabled">
