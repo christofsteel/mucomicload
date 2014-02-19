@@ -63,8 +63,7 @@
         <enum>Qt::ActionsContextMenu</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-image: url(:/res/wood.jpg);
-item::background-color:rgb(170, 0, 0);</string>
+        <string notr="true"/>
        </property>
        <property name="frameShadow">
         <enum>QFrame::Sunken</enum>

@@ -1,7 +1,6 @@
 <RCC>
   <qresource prefix="res">
     <file>tango/list-remove.png</file>
-    <file>wood.jpg</file>
     <file>tango/edit-find.png</file>
     <file>tango/emblem-favorite.png</file>
     <file>tango/go-bottom.png</file>
@@ -9,11 +8,5 @@
     <file>tango/preferences-system.png</file>
     <file>tango/system-log-out.png</file>
     <file>tango/view-refresh.png</file>
-    <file>addseries.png</file>
-    <file>download.png</file>
-    <file>exit.png</file>
-    <file>help.png</file>
-    <file>settings.png</file>
-    <file>update.png</file>
   </qresource>
 </RCC>
