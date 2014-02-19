@@ -54,7 +54,7 @@ class Ui_MainWindow(object):
 		self.listIssues.setObjectName("listIssues")
 		self.horizontalLayout.addWidget(self.splitter)
 		MainWindow.setCentralWidget(self.horizontalSplit)
-		self.menubar = QtGui.QMenuBar(MainWindow)
+		self.menubar = QtGui.QMenuBar()
 		self.menubar.setGeometry(QtCore.QRect(0, 0, 875, 21))
 		self.menubar.setDefaultUp(False)
 		self.menubar.setObjectName("menubar")
