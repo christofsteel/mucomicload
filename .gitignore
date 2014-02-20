@@ -1,7 +1,0 @@
-*.swp
-*.pyc
-*.cbz
-dist/*
-build/*
-
-.gitignore
