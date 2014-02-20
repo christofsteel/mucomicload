@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="res">
+    <file>go-bottom.svg</file>
+    <file>missing.png</file>
     <file>tango/list-remove.png</file>
     <file>tango/edit-find.png</file>
     <file>tango/emblem-favorite.png</file>

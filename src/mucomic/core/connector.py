@@ -1,5 +1,7 @@
-from MUComic.models import Issue, Series
-from MUComic import Database, Api, Paths
+from mucomic.core.models import Issue, Series
+from mucomic.core import DB, Api
+from mucomic import paths
+
 import shutil
 import os.path
 from urllib.request import urlopen
@@ -9,7 +11,7 @@ import re
 class Connector:
 	def __init__(self, config):
 		self.config = config
-		self.db = Database.DB(Paths.dbfile)
+		self.db = DB(paths.dbfile)
 		self.api = Api(self.config['MUComicLoad']['username'], self.config['MUComicLoad']['password'])
 
 	def updateSeries(self):
@@ -53,7 +55,7 @@ class Connector:
 						title = series.title,
 						issue_number = json['issue_number'],
 						cover_url =
-							"https://i.annihil.us/u/prod/marvel%s/portrait_xlarge.jpg" % json['image_url']
+							"https://i.annihil.us/u/prod/marvel%s/portrait_incredible.jpg" % json['image_url']
 						)
 						for json in jsonissues
 					]
@@ -83,7 +85,7 @@ class Connector:
 			return None
 
 	def updateConfig(self):
-		with open(Paths.configfile, 'w') as config:
+		with open(paths.configfile, 'w') as config:
 			self.config.write(config)
 		self.api = Api(self.config['MUComicLoad']['username'], self.config['MUComicLoad']['password'])
 

@@ -1,4 +1,5 @@
 from PySide import QtCore, QtGui
+import mucomic.Qt.mucomicload_rc
 
 
 class SeriesModel(QtCore.QAbstractListModel):
@@ -38,8 +39,7 @@ class SeriesModel(QtCore.QAbstractListModel):
 			if img:
 				qimg = QtGui.QImage.fromData(img, 'JPG')
 			else:
-				img = open('res/missing.png', 'rb').read()
-				qimg = QtGui.QImage.fromData(img, 'png')
+				qimg = QtGui.QImage(":/res/missing.png")
 			qpix = QtGui.QPixmap.fromImage(qimg)
 			return QtGui.QIcon(qpix)
 		elif role == QtCore.Qt.UserRole:
@@ -89,15 +89,14 @@ class IssueModel(QtCore.QAbstractListModel):
 			if issue.hasCover():
 				qimg = QtGui.QImage.fromData(issue.cover(), 'JPG')
 			else:
-				img = open('res/missing.png', 'rb').read()
-				qimg = QtGui.QImage.fromData(img, 'png')
+				qimg = QtGui.QImage(":/res/missing.png")
 			qpix = QtGui.QPixmap.fromImage(qimg)
 			qrect = qpix.rect()
 			if not self.conn.issueHasLocal(issue):
 				tmpicon = QtGui.QIcon(qpix)
 				qpix = tmpicon.pixmap(qrect.width(),qrect.height(),mode=QtGui.QIcon.Disabled)
 			if issue.downloading or self.conn.issueHasTemp(issue):
-				badge = QtGui.QPixmap('res/tango/go-bottom.png')
+				badge = QtGui.QPixmap(':/res/go-bottom.svg')
 				badgepix = badge.scaled(64,64)
 				painter = QtGui.QPainter(qpix)
 				painter.drawPixmap(qrect.width()-64,qrect.height()-64,badgepix)
@@ -105,29 +104,5 @@ class IssueModel(QtCore.QAbstractListModel):
 			return QtGui.QIcon(qpix)
 		elif role == QtCore.Qt.UserRole:
 			return issue
-		else:
-			return None
-
-class SeriesSearchResultModel(QtCore.QAbstractItemModel):
-	def __init__(self, series, conn, parent=None):
-		QtCore.QAbstractItemModel.__init__(self, parent)
-		self._series = series
-		self.conn = conn
-		
-	def rowCount(self, role):
-		return len(self._series)
-
-	def columnCount(self, role):
-		return 3
-
-	def headerData(self, sec, orient, role):
-		print("I have been called %s" % sec)
-		return(str(sec))
-
-	def data(self, index, role):
-		if not index.isValid():
-			return None
-		if role == QtCore.Qt.DisplayRole:
-			return "Foobar"
 		else:
 			return None

@@ -1,4 +1,4 @@
-from MUComic.App import app
+from mucomic import paths
 from urllib.request import urlopen
 import os.path
 import hashlib
@@ -13,7 +13,7 @@ class Issue:
 		self.cover_url = cover_url
 		h = hashlib.new('sha256')
 		h.update(bytes(self.cover_url, 'utf-8'))
-		self.coverFile = os.path.join(app.user_data_dir,'covers',h.hexdigest())
+		self.coverFile = os.path.join(paths.coverfolder,h.hexdigest())
 		self.title = title
 
 	def __eq__(self, other):

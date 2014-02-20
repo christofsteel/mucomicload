@@ -129,18 +129,9 @@
     <addaction name="separator"/>
     <addaction name="actionAbout_MUComicLoad"/>
    </widget>
-   <widget class="QMenu" name="menuAction">
-    <property name="title">
-     <string>&amp;View</string>
-    </property>
-    <addaction name="actionList_View"/>
-    <addaction name="actionFolder_View"/>
-    <addaction name="separator"/>
-    <addaction name="actionSeries_have_Cover"/>
-   </widget>
    <widget class="QMenu" name="menuSeries">
     <property name="title">
-     <string>Series</string>
+     <string>&amp;Series</string>
     </property>
     <addaction name="actionAdd_series"/>
     <addaction name="actionRemove_series"/>
@@ -149,15 +140,13 @@
    </widget>
    <widget class="QMenu" name="menuIssue">
     <property name="title">
-     <string>Issue</string>
+     <string>&amp;Issue</string>
     </property>
     <addaction name="actionOpen"/>
     <addaction name="separator"/>
     <addaction name="actionDownload_Issue"/>
-    <addaction name="actionDownload_Issue_As"/>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuAction"/>
    <addaction name="menuSeries"/>
    <addaction name="menuIssue"/>
    <addaction name="menuHelp"/>
@@ -170,7 +159,7 @@
     <bool>false</bool>
    </property>
    <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonFollowStyle</enum>
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
    </property>
    <property name="floatable">
     <bool>false</bool>
@@ -301,15 +290,6 @@
    </property>
    <property name="text">
     <string>Series have Cover</string>
-   </property>
-  </action>
-  <action name="actionDownload_Issue_As">
-   <property name="icon">
-    <iconset theme="go-bottom" resource="mucomicload.qrc">
-     <normaloff>:/res/tango/go-bottom.png</normaloff>:/res/tango/go-bottom.png</iconset>
-   </property>
-   <property name="text">
-    <string>Download Issue As ...</string>
    </property>
   </action>
   <action name="actionRemove_series">

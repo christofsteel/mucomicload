@@ -1,6 +1,6 @@
-from MUComic import UI, settingsWindow, SearchWindow
-from MUComic.Qt.models import IssueModel, SeriesModel, SeriesSearchResultModel
-from MUComic.Qt.threads import PopulateThread, UpdateThread,DownloadThread,AddSeriesThread
+from mucomic.Qt.windows import mainWindow, settingsWindow, searchWindow
+from mucomic.Qt.models import IssueModel, SeriesModel
+from mucomic.Qt.threads import PopulateThread, UpdateThread,DownloadThread,AddSeriesThread
 import subprocess
 import sys
 import signal
@@ -191,7 +191,7 @@ class UIStarter():
 		self.conn = conn
 		self.app = QtGui.QApplication(sys.argv)
 		self.mw = QtGui.QMainWindow()
-		self.ui = UI.Ui_MainWindow()
+		self.ui = mainWindow.Ui_MainWindow()
 		self.ui.setupUi(self.mw)
 		self.issueSeries = False
 
@@ -227,7 +227,7 @@ class UIStarter():
 		self.settingswindow.buttonBox.accepted.connect(self.updateConfig)
 		self.settingswindow.buttonBox.rejected.connect(self.revertConfig)
 
-		self.searchWindow = SearchWindow.Ui_Form()
+		self.searchWindow = searchWindow.Ui_Form()
 		self.searchWindowForm = QtGui.QDialog(self.mw)
 		self.searchWindow.setupUi(self.searchWindowForm)
 		self.searchWindow.bt_search.clicked.connect(self.searchButtonClicked)

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-from MUComic import Connector, UIStarter, Paths
+from mucomic.core import Connector
+from mucomic import startUI, paths
 import configparser
 import os.path
 
@@ -14,8 +15,8 @@ if __name__ == "__main__":
 	config.set("UI", "FolderView", "True")	
 	config.set("UI", "SeriesCover", "True")	
 
-	config.read(Paths.configfile)
+	config.read(paths.configfile)
 	conn = Connector(config)
-	app = UIStarter(conn)
+	app = startUI.UIStarter(conn)
 	app.start()
 

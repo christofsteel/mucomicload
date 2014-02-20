@@ -1,5 +1,0 @@
-[MUComicLoad]
-;username = username
-;password = secret
-database = ~/.mucomics.db
-downloaddir = ~/MUComics/

@@ -1,5 +1,5 @@
 import sqlite3
-from MUComic.models import Issue, Series
+from mucomic.core.models import Issue, Series
 
 """
 	Layout:

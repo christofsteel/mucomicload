@@ -1,5 +1,5 @@
 from PySide import QtCore
-from MUComic import Issue
+from mucomic.core.models import Issue
 import queue
 
 class downloading(QtCore.QObject):
@@ -28,6 +28,7 @@ class UpdateThread(QtCore.QThread):
 			self.conn.updateIssues(s)
 			i = self.model.indexFor(s)
 			self.model.setData(i, s)
+		self.statusChanged.emit('Done')
 		#self.statusChanged.emit("Downloading issues for faved series")
 		#fseries = self.conn.db.get_faved_series()
 		#for s in fseries:
