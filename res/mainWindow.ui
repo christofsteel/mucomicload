@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>MUComicLoad</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="mucomicload.qrc">
+    <normaloff>:/res/mucomicload.png</normaloff>:/res/mucomicload.png</iconset>
+  </property>
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>true</bool>
   </property>
@@ -229,7 +233,10 @@
      <normaloff>:/res/tango/go-bottom.png</normaloff>:/res/tango/go-bottom.png</iconset>
    </property>
    <property name="text">
-    <string>Download Issue</string>
+    <string>Download</string>
+   </property>
+   <property name="toolTip">
+    <string>Download</string>
    </property>
   </action>
   <action name="actionOpen">
@@ -238,7 +245,10 @@
      <normaloff>:/res/tango/edit-find.png</normaloff>:/res/tango/edit-find.png</iconset>
    </property>
    <property name="text">
-    <string>Read Issue</string>
+    <string>Read</string>
+   </property>
+   <property name="toolTip">
+    <string>Read</string>
    </property>
   </action>
   <action name="actionList_View">
@@ -281,7 +291,7 @@
      <normaloff>:/res/tango/go-bottom.png</normaloff>:/res/tango/go-bottom.png</iconset>
    </property>
    <property name="text">
-    <string>Download Series</string>
+    <string>Download</string>
    </property>
   </action>
   <action name="actionSeries_have_Cover">
@@ -307,6 +317,9 @@
      <normaloff>:/res/tango/go-bottom.png</normaloff>:/res/tango/go-bottom.png</iconset>
    </property>
    <property name="text">
+    <string>Download</string>
+   </property>
+   <property name="toolTip">
     <string>Download</string>
    </property>
   </action>

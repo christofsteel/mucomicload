@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="res">
+    <file>mucomicload.png</file>
     <file>go-bottom.svg</file>
     <file>missing.png</file>
     <file>tango/list-remove.png</file>

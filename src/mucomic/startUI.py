@@ -28,6 +28,8 @@ class UIStarter():
 			self.updateThread.terminated.connect(lambda:self.ui.actionUpdate.setDisabled(False))
 			self.updateThread.statusChanged.connect(self.notify)
 			self.updateThread.finished.connect(self.downloadFavedSeries)
+			self.updateThread.finished.connect(self.checkAddedSeries)
+
 			self.updateThread.start()
 
 	def downloadFavedSeries(self):
@@ -66,10 +68,10 @@ class UIStarter():
 
 	def downloadIssue(self):
 		issueindex = self.ui.listIssues.currentIndex()
-		if issueindex.row() == -1:
-			return None
-		issue = self.ui.listIssues.model().data(issueindex,QtCore.Qt.UserRole)
-		self.downloadIssues([issue])
+		selection = self.ui.listIssues.selectedIndexes()
+		issues = [self.ui.listIssues.model().data(issueindex,QtCore.Qt.UserRole)
+				for issueindex in selection if issueindex.row != -1]
+		self.downloadIssues(issues)
 
 	def downloadIssues(self, issues):
 		if hasattr(self,'downloadThread') and self.downloadThread.isRunning():
@@ -128,9 +130,9 @@ class UIStarter():
 	def switchIssueSeries(self, issueSeries):
 		self.issueSeries = issueSeries 
 		if issueSeries:
-			self.ui.actionDownload.setText("Download Issue")
+			self.ui.actionDownload.setText("Download")
 		else:
-			self.ui.actionDownload.setText("Download Series")
+			self.ui.actionDownload.setText("Download")
 
 	def download(self):
 		if self.issueSeries:
@@ -186,6 +188,22 @@ class UIStarter():
 		self.searchmodel = SeriesModel(result,
 				self.conn, self.searchWindow.resultView)
 		self.searchWindow.resultView.setModel(self.searchmodel)
+		self.searchWindow.bt_search.setDefault(False)
+
+	def checkAddedSeries(self):
+		if self.seriesmodel.rowCount(None) == 0:
+			self.searchWindowForm.show()
+
+	def checkDatabase(self):
+		if self.conn.emptyDatabase():
+			updateDialog = QtGui.QMessageBox(self.mw)
+			updateDialog.setText("You database is empty.<br /> Would you like to update your database?")
+			updateDialog.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+			updateDialog.setDefaultButton(QtGui.QMessageBox.Yes)
+			updateDialog.accepted.connect(self.updateSeries)
+			ret =  updateDialog.exec_()
+			if ret == QtGui.QMessageBox.Yes:
+				self.updateSeries()
 
 	def __init__(self, conn):
 		self.conn = conn
@@ -225,12 +243,14 @@ class UIStarter():
 		self.settingswindow.btn_comicViewer.clicked.connect(self.browseComicViewerClicked)
 		self.settingswindow.btn_download.clicked.connect(self.browseDownloadDirClicked)
 		self.settingswindow.buttonBox.accepted.connect(self.updateConfig)
+		self.settingswindowform.finished.connect(lambda x: self.checkDatabase())
 		self.settingswindow.buttonBox.rejected.connect(self.revertConfig)
 
 		self.searchWindow = searchWindow.Ui_Form()
 		self.searchWindowForm = QtGui.QDialog(self.mw)
 		self.searchWindow.setupUi(self.searchWindowForm)
 		self.searchWindow.bt_search.clicked.connect(self.searchButtonClicked)
+		self.searchWindow.bt_search.setDefault(True)
 		self.searchmodel = SeriesModel([], self.conn,
 				self.searchWindow.resultView) 
 		self.searchWindow.resultView.setModel(self.searchmodel)
@@ -243,7 +263,7 @@ class UIStarter():
 		self.ui.actionDownload_Issue.triggered.connect(self.downloadIssue)
 		self.ui.actionDownload_Series.triggered.connect(self.downloadSeriesWrapper)
 		self.ui.actionDownload.triggered.connect(self.download)
-		self.ui.actionDownload.setText("Download Series")
+		self.ui.actionDownload.setText("Download")
 		self.ui.menuFileSettings.triggered.connect(self.settingswindowform.show)
 		self.ui.actionUpdate.triggered.connect(self.updateSeries)
 		self.ui.actionAdd_series.triggered.connect(self.searchWindowForm.show)
@@ -253,6 +273,8 @@ class UIStarter():
 		self.ui.actionList_View.triggered.connect(lambda: self.setListView(True))
 		self.ui.actionFolder_View.triggered.connect(lambda:
 				self.setListView(False))
+
+
 	
 	def start(self):
 		self.mw.show()
@@ -268,6 +290,12 @@ class UIStarter():
 			self.ui.listComics.selectionModel().select(firstIndex, QtGui.QItemSelectionModel.SelectCurrent)
 			firstseries = self.seriesmodel.data(firstIndex,QtCore.Qt.UserRole)
 			self.populateIssueModel(firstseries)
+
+		if not self.conn.hasConfig():
+			self.settingswindowform.show()
+		else:
+			self.checkDatabase()
+
 
 		signal.signal(signal.SIGINT, signal.SIG_DFL)
 		sys.exit(self.app.exec_())

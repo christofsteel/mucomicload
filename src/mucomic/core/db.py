@@ -19,6 +19,13 @@ class DB:
 		conn.commit()
 		conn.close()
 
+	def count_series(self):
+		conn = sqlite3.connect(self.db_path)
+		c = conn.cursor()
+		result = c.execute("SELECT count(*) from series;").fetchone()
+		return result[0]
+
+
 	def add_series(self, series):
 		conn = sqlite3.connect(self.db_path)
 		c = conn.cursor()

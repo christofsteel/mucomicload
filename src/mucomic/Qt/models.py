@@ -30,10 +30,6 @@ class SeriesModel(QtCore.QAbstractListModel):
 	def data(self, index, role):
 		if role == QtCore.Qt.DisplayRole:
 			return "(%s) %s" % (self._series[index.row()].start,self._series[index.row()].title)
-		elif role == QtCore.Qt.FontRole:
-			if self._series[index.row()].fav:
-				return QtGui.QFont('Sans Serif', 10, QtGui.QFont.Bold)
-			return None
 		elif role == QtCore.Qt.DecorationRole:
 			img = self.conn.getFirstCover(self._series[index.row()])
 			if img:
@@ -41,6 +37,10 @@ class SeriesModel(QtCore.QAbstractListModel):
 			else:
 				qimg = QtGui.QImage(":/res/missing.png")
 			qpix = QtGui.QPixmap.fromImage(qimg)
+			qrect = qpix.rect()
+			if not self._series[index.row()].fav:
+				tmpicon = QtGui.QIcon(qpix)
+				qpix = tmpicon.pixmap(qrect.width(),qrect.height(),mode=QtGui.QIcon.Disabled)
 			return QtGui.QIcon(qpix)
 		elif role == QtCore.Qt.UserRole:
 			return self._series[index.row()]

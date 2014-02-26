@@ -84,6 +84,12 @@ class Connector:
 		else:
 			return None
 
+	def hasConfig(self):
+		return os.path.exists(paths.configfile)
+
+	def emptyDatabase(self):
+		return self.db.count_series() == 0
+
 	def updateConfig(self):
 		with open(paths.configfile, 'w') as config:
 			self.config.write(config)
