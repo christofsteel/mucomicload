@@ -212,6 +212,7 @@ class UIStarter():
 		self.mw = QtGui.QMainWindow()
 		self.ui = mainWindow.Ui_MainWindow()
 		self.ui.setupUi(self.mw)
+		self.mw.menubar.setParent()
 		changeIconsUI(self.ui)
 
 		self.issueSeries = False
