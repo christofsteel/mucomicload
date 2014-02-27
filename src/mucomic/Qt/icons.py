@@ -7,3 +7,4 @@ def addThemedIcon(action, name):
 
 def changeIconsUI(ui):
 	addThemedIcon(ui.menuFileSettings, 'preferences-system')
+	addThemedIcon(ui.actionAdd_series, 'list-add')
