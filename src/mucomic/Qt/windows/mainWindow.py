@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'res/mainWindow.ui'
 #
-# Created: Wed Feb 26 18:17:15 2014
+# Created: Thu Feb 27 17:23:39 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -57,7 +57,7 @@ class Ui_MainWindow(object):
 		self.listIssues.setObjectName("listIssues")
 		self.horizontalLayout.addWidget(self.splitter)
 		MainWindow.setCentralWidget(self.horizontalSplit)
-		self.menubar = QtGui.QMenuBar(MainWindow)
+		self.menubar = QtGui.QMenuBar()
 		self.menubar.setGeometry(QtCore.QRect(0, 0, 875, 21))
 		self.menubar.setDefaultUp(False)
 		self.menubar.setObjectName("menubar")
