@@ -7,7 +7,7 @@ def addThemedIcon(action, name):
 
 def changeIconsUI(ui):
 	addThemedIcon(ui.menuFileSettings, 'preferences-system')
-	addThemedIcon(ui.menuFileQuit, 'system-log-out')
+	addThemedIcon(ui.menuFileQuit, 'application-exit')
 	addThemedIcon(ui.actionAdd_series, 'list-add')
 	addThemedIcon(ui.actionRemove_series, 'list-remove')
 	addThemedIcon(ui.actionUpdate, 'view-refresh')
