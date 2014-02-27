@@ -96,7 +96,7 @@ class IssueModel(QtCore.QAbstractListModel):
 				tmpicon = QtGui.QIcon(qpix)
 				qpix = tmpicon.pixmap(qrect.width(),qrect.height(),mode=QtGui.QIcon.Disabled)
 			if issue.downloading or self.conn.issueHasTemp(issue):
-				badge = QtGui.QPixmap(':/res/go-bottom.svg')
+				badge = QtGui.QPixmap(':/res/tango/go-bottom.png')
 				badgepix = badge.scaled(64,64)
 				painter = QtGui.QPainter(qpix)
 				painter.drawPixmap(qrect.width()-64,qrect.height()-64,badgepix)

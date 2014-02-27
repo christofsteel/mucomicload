@@ -1,6 +1,7 @@
 from mucomic.Qt.windows import mainWindow, settingsWindow, searchWindow
 from mucomic.Qt.models import IssueModel, SeriesModel
 from mucomic.Qt.threads import PopulateThread, UpdateThread,DownloadThread,AddSeriesThread
+from mucomic.Qt.icons import changeIconsUI
 import subprocess
 import sys
 import signal
@@ -211,6 +212,8 @@ class UIStarter():
 		self.mw = QtGui.QMainWindow()
 		self.ui = mainWindow.Ui_MainWindow()
 		self.ui.setupUi(self.mw)
+		changeIconsUI(self.ui)
+
 		self.issueSeries = False
 
 		self.ui.actionFolder_View.setCheckable(True)
