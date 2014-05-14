@@ -1,0 +1,43 @@
+# See http://wiki.archlinux.org/index.php/Python_Package_Guidelines for more
+# information on Python packaging.
+
+# Maintainer: Christoph Stahl <christoph.stahl@uni-dortmund.de>
+pkgname=mucomicload-git
+pkgver=20140514
+pkgrel=1
+pkgdesc="A Download for Marvel Unlimited"
+arch=(any)
+url="https://github.com/christofsteel"
+license=('Apache2')
+depends=('python' 'python-pyside' 'python-appdirs')
+options=(!emptydirs)
+source=()
+md5sums=()
+
+_gitroot=https://github.com/christofsteel/mucomicload.git
+_gitname=mucomicload
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [[ -d "$_gitname" ]]; then
+    cd "$_gitname" && git pull origin
+    msg "The local files are updated."
+  else
+    git clone "$_gitroot" "$_gitname"
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting build..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+}
+
+package() {
+  cd "$srcdir/$_gitname-build/src"
+  python setup.py install --root="$pkgdir/" --optimize=1
+}
+
+# vim:set ts=2 sw=2 et:
