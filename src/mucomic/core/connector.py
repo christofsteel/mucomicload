@@ -105,7 +105,7 @@ class Connector:
 		series = self.get_series(issue.series_id)
 		safetitle = re.sub('[^\w\-_\.\(\) ]', '',series.formatedseries)
 		return os.path.join(self.config['MUComicLoad']['downloaddir'], safetitle, 
-			'%s %s (%s).cbz' % (safetitle, issue.safe_nr, issue.id))
+			'%s %s.cbz' % (safetitle, issue.safe_nr))
 
 	def issueHasTemp(self, issue):
 		return os.path.isfile("%s_" % self.cbzfile(issue))
